@@ -13,7 +13,7 @@ All theese files and directories should be placed at src/ directory in a catkin 
   
   ``$ cd cd catkin_ws/src``
   
-  ``$ git clone --recursive https://github.com/danimtb/pioneer3at_ETSIDI.git .``	(NOTE THE . AT THE END OF THE LINE)
+  ``$ git clone https://github.com/danimtb/pioneer3at_ETSIDI.git``
 
 Content
 -------
