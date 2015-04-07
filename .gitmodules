@@ -1,0 +1,6 @@
+[submodule "rosaria"]
+	path = rosaria
+	url = https://github.com/amor-ros-pkg/rosaria.git
+[submodule "RCPRG_laser_drivers"]
+	path = RCPRG_laser_drivers
+	url = https://github.com/RCPRG-ros-pkg/RCPRG_laser_drivers.git
