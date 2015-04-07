@@ -1,0 +1,4 @@
+<launch>
+  <node name="RosAria" pkg="rosaria" type="RosAria"/>
+  <node name="lms1xx" pkg="LMS1xx_node" type="LMS1xx_node"/>
+</launch>
