@@ -22,15 +22,15 @@ Following packages are used:
 
 - rosaria: To connect to pionner 3at robot with motors (odometry)
 
-    ``rosrun rosaria RosAria``
+    ``$ rosrun rosaria RosAria``
 
 - lms1xx: To connect to Laser SICK LMS100
 
-    ``rosrun lms1xx LMS1xx_node``
+    ``$ rosrun lms1xx LMS1xx_node``
     
 - teleop_pioneer: To teleoperate pioneer 3at with key arrows
 
-    ``rosrun teleop_pioneer teleop_p3at``
+    ``$ rosrun teleop_pioneer teleop_p3at``
     
 Usage
 -----
