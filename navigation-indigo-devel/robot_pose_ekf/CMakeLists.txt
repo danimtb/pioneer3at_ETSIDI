@@ -3,7 +3,17 @@ project(robot_pose_ekf)
 
 # bfl (Bayesian Filtering Library) is a third party package that uses pkg-config
 find_package(PkgConfig)
-pkg_check_modules(BFL REQUIRED orocos-bfl)
+pkg_check_modules(BFL REQUIRED bfl)
+
+##########################
+# find_package(PkgConfig)
+# pkg_check_modules(BFL REQUIRED bfl)
+# include_directories(${BFL_INCLUDE_DIRS})
+# message("BFL include dirs:" ${BFL_INCLUDE_DIRS})
+# message("BFL library dirs:" ${BFL_LIBRARY_DIRS})
+# link_directories(${BFL_LIBRARY_DIRS})
+
+##################################
 
 include_directories(${BFL_INCLUDE_DIRS})
 link_directories(${BFL_LIBRARY_DIRS})
