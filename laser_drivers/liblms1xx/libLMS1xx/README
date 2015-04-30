@@ -1,0 +1,14 @@
+=== Introduction
+
+This project contains library for interfacing with SICK LMS1xx lidars.
+
+Authors:
+  Konrad Banachowicz
+
+=== Build instructions
+
+To build this software please do the following:
+mkdir build
+cd build
+cmake  ..
+make && make install 

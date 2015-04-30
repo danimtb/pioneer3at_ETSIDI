@@ -102,7 +102,7 @@ typedef struct _scanDataCfg {
 	 * Determines whether the device name is to be output.
 	 */
 	bool deviceName;
-
+	
 	bool timestamp;
 
 	/*!
@@ -117,31 +117,6 @@ typedef struct _scanDataCfg {
 	int outputInterval;
 } scanDataCfg;
 
-/*!
-* @class outputRange
-* @brief Structure containing scan output range configuration
-*
-* @author wpd
-*/
-typedef struct _scanOutputRange {
-	/*!
-	 * @brief Scanning resolution.
-	 * 1/10000 degree
-	 */
-	int angleResolution;
-
-	/*!
-	 * @brief Start angle.
-	 * 1/10000 degree
-	 */
-	int startAngle;
-
-	/*!
-	 * @brief Stop angle.
-	 * 1/10000 degree
-	 */
-	int stopAngle;
-} scanOutputRange;
 /*!
 * @class scanData
 * @brief Structure containing single scan message.
@@ -294,16 +269,6 @@ public:
 	void setScanDataCfg(const scanDataCfg &cfg);
 
 	/*!
-	* @brief Get current output range configuration.
-	* Get output range configuration :
-	* - scanning resolution.
-	* - start angle.
-	* - stop angle.
-	* @returns scanOutputRange structure.
-	*/
-	scanOutputRange getScanOutputRange() const;
-
-	/*!
 	* @brief Start or stop continuous data acquisition.
 	* After reception of this command device start or stop continuous data stream containing scan messages.
 	* @param start 1 : start 0 : stop
@@ -332,9 +297,9 @@ public:
 
 private:
 	bool connected;
+	bool debug;
 
 	int sockDesc;
 };
 
 #endif /* LMS1XX_H_ */
-
