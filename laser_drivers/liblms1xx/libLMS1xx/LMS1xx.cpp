@@ -205,7 +205,7 @@ void LMS1xx::scanContinous(int start) {
 }
 
 void LMS1xx::getData(scanData& data) {
-	char buf[20000];
+	char buf[60000];
 	fd_set rfds;
 	struct timeval tv;
 	int retval, len;
@@ -219,7 +219,7 @@ void LMS1xx::getData(scanData& data) {
 		tv.tv_usec = 50000;
 		retval = select(sockDesc + 1, &rfds, NULL, NULL, &tv);
 		if (retval) {
-			len += read(sockDesc, buf + len, 20000 - len);
+			len += read(sockDesc, buf + len, 60000 - len);
 		}
 	} while ((buf[0] != 0x02) || (buf[len - 1] != 0x03));
 
