@@ -9,6 +9,7 @@
 
 #include "rosaria/BumperState.h"
 #include <tf/transform_listener.h>
+#include <nav_msgs/Odometry.h>
 
 using geometry_msgs::Twist;
 using namespace std;
@@ -17,50 +18,69 @@ using namespace std;
 class MoveAlone
 {
 public:
-	MoveAlone();
+	MoveAlone(ros::NodeHandle &n);
 	bool avanza(float distance, float speed);
-	//gira(float grados, float speed);
-	void positionCallback(const nav_msgs::Odometry::ConstPtr& odom);
+	bool gira(bool clockwise, double degrees, double speed);
+	void stop();
 	tf::TransformListener listener;
 	ros::Time t1;
 	
 private:
 	ros::NodeHandle n;	
 	ros::Publisher publicadorVelocidad;
-	ros::Subscriber subscriptorPosicion;
+	ros::Subscriber subscriptorVelocidad;
+	nav_msgs::Odometry odometry;
+	void getPose(const nav_msgs::Odometry::ConstPtr& odom);
+	
 	unsigned int temp;
 	bool forward;
 	bool backward;
 	bool right;
 	bool left;
-	float x;
-	float y;
-	float z;
 };
 
-void MoveAlone::positionCallback(const nav_msgs::Odometry::ConstPtr& odom)
+void MoveAlone::getPose(const nav_msgs::Odometry::ConstPtr& odom)
 {
-	x=odom->pose.pose.position.x;
-	y=odom->pose.pose.position.y;
-	z=odom->pose.pose.orientation.z;
-	//cout << *odom <<endl;
-	ROS_INFO("New position:\n\tx = %f\n\ty = %f\n\tz = %f", x, y, z);
+	odometry=*odom;		
 }
 
-MoveAlone::MoveAlone()
+void MoveAlone::stop()
+{
+	ROS_INFO("Odometry -> x=%f", odometry.twist.twist.linear.x);
+	ROS_INFO("Odometry -> z=%f", odometry.twist.twist.angular.z);
+	ROS_INFO("Stopping robot...");
+	while(odometry.twist.twist.linear.x!=0.0f || odometry.twist.twist.angular.z!=0.0f)
+	{
+		//ROS_INFO("Odometry -> x=%f", odometry.twist.twist.linear.x);
+		//ROS_INFO("Odometry -> z=%f", odometry.twist.twist.angular.z);
+		Twist vel_stop;
+		vel_stop.linear.y = 0.0f;
+		vel_stop.linear.z = 0.0f;
+		vel_stop.angular.x = 0.0f;
+		vel_stop.angular.y = 0.0f;	
+		vel_stop.angular.z = 0.0f;
+		publicadorVelocidad.publish(vel_stop);
+		ros::spinOnce();
+	}
+	ROS_INFO("Robot Stopped");
+	ROS_INFO("Odometry -> x=%f", odometry.twist.twist.linear.x);
+	ROS_INFO("Odometry -> z=%f", odometry.twist.twist.angular.z);
+	
+}
+
+MoveAlone::MoveAlone(ros::NodeHandle &n)
 {
 	ROS_INFO("Initializing MoveAlone class");
 	temp=0;
-	publicadorVelocidad = n.advertise<geometry_msgs::Twist>("RosAria/cmd_vel", 1);
+	publicadorVelocidad = n.advertise<geometry_msgs::Twist>("RosAria/cmd_vel", 2);
+	subscriptorVelocidad = n.subscribe("RosAria/pose", 10, &MoveAlone::getPose, this);
 	ROS_INFO("Publisher OK");
-	subscriptorPosicion = n.subscribe("RosAria/pose", 100, &MoveAlone::positionCallback, this);
-	ROS_INFO("Subscriber OK");
 }
 
 bool MoveAlone::avanza(float distance, float speed)
 {
+	speed=fabs(speed);
 	ROS_INFO("Moving forward/backward");
-	bool done=false;
 	
 	if (distance>0)
 	{
@@ -71,103 +91,152 @@ bool MoveAlone::avanza(float distance, float speed)
 	{
 		forward=true;
 		backward=false;
-	}
-	
-	if (speed<0)
 		speed=-speed;
+	}
 		
 	Twist vel;
-	tf::StampedTransform startTraslation;
-	listener.waitForTransform("/odom", "/base_link", ros::Time(0), ros::Duration(3.0));
-	listener.lookupTransform("/odom", "/base_link", ros::Time(0), startTraslation);
-	
-	float x0 = x;
-    float y0 = y;
+
+	listener.waitForTransform("base_link", "odom", ros::Time(0), ros::Duration(1.0));
+	tf::StampedTransform start_transform;
+	tf::StampedTransform current_transform;
+	listener.lookupTransform("base_link", "odom", ros::Time(0), start_transform);
     
-    vel.linear.y = 0;
-	vel.linear.z = 0;
-	vel.angular.x = 0;
-	vel.angular.y = 0;
-	vel.angular.z = 0;
-	
-    if(forward)
-		vel.linear.x = speed;
-	else
-		vel.linear.x = -speed;
+    vel.linear.y = 0.0f;
+	vel.linear.z = 0.0f;
+	vel.angular.x = 0.0f;
+	vel.angular.y = 0.0f;
+	vel.angular.z = 0.0f;
+	vel.linear.x = speed;
 		
 	//std_msgs::String msg;
 	//std::stringstream ss;
 	//ss << vel.linear.x;
 	//msg.data = ss.str();
+		
+	ros::Rate rate(10.0);
+    bool done = false;
+    //send the drive command
+	publicadorVelocidad.publish(vel);
+	//rate.sleep();
     
-    float dx=0;
-	float dy=0;
-	float distanceMoved=0;
-	
-	tf::StampedTransform currentTraslation;
-		
-    while(true)
+    while(!done && n.ok())
     {
-		listener.lookupTransform("/odom", "/base_link", ros::Time(0), currentTraslation);
-		dx=currentTraslation.getOrigin().getX()-startTraslation.getOrigin().getX();
-		dy=currentTraslation.getOrigin().getY()-startTraslation.getOrigin().getY();
-		
-		publicadorVelocidad.publish(vel);
-		ROS_INFO("Moving with speed: %f", vel.linear.x);
-		
-		distanceMoved = sqrt(dx * dx + dy * dy);
-		ROS_INFO("Distance moved: %f", distanceMoved);
-		 
-		
-		if(forward)
+		//get the current transform
+		try
 		{
-			if (distanceMoved >= distance)
-			{
-				done=true;
-				break;
-			}
+			listener.lookupTransform("base_link", "odom", ros::Time(0), current_transform);
 		}
-		else
-		{
-			if (distanceMoved >= -distance)
-			{
-				done=true;
-				break;
-			}
+		catch (tf::TransformException ex)
+        {
+			ROS_ERROR("%s",ex.what());
+			break;
 		}
 		
-		ros::Duration(0.1).sleep(); // sleep for one tenth of a second
+		//see how far we've traveled
+		tf::Transform relative_transform = start_transform.inverse() * current_transform;
+		double dist_moved = relative_transform.getOrigin().length();
+		ROS_INFO("Distance moved: %f", dist_moved);
+		
+		if(fabs(dist_moved) > pow(fabs(distance), 0.50f))
+		{
+			ROS_INFO("Decreasing speed");
+			vel.linear.x=speed*0.1f;
+			vel.linear.y = 0.0f;
+			vel.linear.z = 0.0f;
+			vel.angular.x = 0.0f;
+			vel.angular.y = 0.0f;
+			vel.angular.z = 0.0f;
+			publicadorVelocidad.publish(vel);
+			
+		}
+		
+		if(fabs(dist_moved) > fabs(distance))
+		{
+			ROS_INFO("Distance reached!");
+			done = true;
+		}
 		ros::spinOnce();
 	}
-	forward=false;
-	backward=false;
-	vel.linear.x = 0.0;
-	publicadorVelocidad.publish(vel);	
+	stop();
 	
-return done;
+	if (done) return true;
+    return false;
 }
 
-
-
-void quit(int sig)
+bool MoveAlone::gira(bool clockwise, double degrees, double speed)
 {
-	ros::shutdown();
-	exit(0);
-}
+	double radians=(degrees/360.0f)*2*M_PI;
+	ROS_INFO("Rotating %f radians", radians);
+	
+	while(radians < 0) radians += 2*M_PI;
+    while(radians > 2*M_PI) radians -= 2*M_PI;
+
+    //wait for the listener to get the first message
+    listener.waitForTransform("base_link", "odom", ros::Time(0), ros::Duration(1.0));
+    
+    //we will record transforms here
+    tf::StampedTransform start_transform;
+    tf::StampedTransform current_transform;
+
+    //record the starting transform from the odometry to the base frame
+    listener.lookupTransform("base_link", "odom", ros::Time(0), start_transform);
+    
+    //we will be sending commands of type "twist"
+    geometry_msgs::Twist base_cmd;
+    //the command will be to turn at 0.75 rad/s
+    base_cmd.linear.x = base_cmd.linear.y = 0.0;
+    base_cmd.angular.z = speed;
+    if (clockwise) base_cmd.angular.z = -base_cmd.angular.z;
+    
+    //the axis we want to be rotating by
+    tf::Vector3 desired_turn_axis(0,0,1);
+    if (!clockwise) desired_turn_axis = -desired_turn_axis;
+    
+    bool done = false;
+    //send the drive command
+    publicadorVelocidad.publish(base_cmd);
+    
+    while (!done && n.ok())
+    {
+      //get the current transform
+      try
+      {
+        listener.lookupTransform("base_link", "odom", ros::Time(0), current_transform);
+      }
+      catch (tf::TransformException ex)
+      {
+        ROS_ERROR("%s",ex.what());
+        break;
+      }
+      tf::Transform relative_transform = start_transform.inverse() * current_transform;
+      tf::Vector3 actual_turn_axis = relative_transform.getRotation().getAxis();
+      
+      double angle_turned = relative_transform.getRotation().getAngle();
+      
+      if(fabs(angle_turned) < 1.0e-2) continue;
+
+      if(actual_turn_axis.dot( desired_turn_axis ) < 0)
+		angle_turned = 2 * M_PI - angle_turned;
+
+      if(angle_turned > radians)
+		done = true;
+		
+		ros::spinOnce();
+    }
+    stop();
+    if (done) return true;
+    return false;
+  }
 
 int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "moving_alone");
 	ROS_INFO("Moving alone started");
-	MoveAlone moving_alone;
-	signal(SIGINT, quit);
-	ros::Rate r(5);	
-	while(ros::ok())
-	{
-		moving_alone.avanza(1.0, 0.2);
-		
-		while(1){}
-	}
-	return(0);
+	ros::NodeHandle nh;
+	MoveAlone moving_alone(nh);
+	moving_alone.avanza(1.2f, 0.5f);
+	moving_alone.gira(true, 90.0f, 0.5f);
+	moving_alone.avanza(-0.5f, 0.1f);
+	return 0;
 }
 	
