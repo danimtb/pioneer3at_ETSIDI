@@ -1,15 +1,9 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
-#include <signal.h>
-#include <termios.h>
-#include <stdio.h>
-#include <iostream>
-#include <math.h>
 
 #include "rosaria/BumperState.h"
 #include <tf/transform_listener.h>
-#include <nav_msgs/Odometry.h>
 
 using geometry_msgs::Twist;
 using namespace std;
@@ -135,10 +129,9 @@ bool MoveAlone::avanza(float distance, float speed)
 		//see how far we've traveled
 		tf::Transform relative_transform = start_transform.inverse() * current_transform;
 		double dist_moved = relative_transform.getOrigin().length();
-		ROS_INFO("Distance moved: %f", dist_moved);
 		
 		if(fabs(dist_moved) > pow(fabs(distance), 0.50f))
-		{
+        {
 			ROS_INFO("Decreasing speed");
 			vel.linear.x=speed*0.1f;
 			vel.linear.y = 0.0f;
@@ -151,8 +144,8 @@ bool MoveAlone::avanza(float distance, float speed)
 		}
 		
 		if(fabs(dist_moved) > fabs(distance))
-		{
-			ROS_INFO("Distance reached!");
+        {
+            ROS_INFO("Distance moved: %f", dist_moved);
 			done = true;
 		}
 		ros::spinOnce();
@@ -198,35 +191,37 @@ bool MoveAlone::gira(bool clockwise, double degrees, double speed)
     
     while (!done && n.ok())
     {
-      //get the current transform
-      try
-      {
-        listener.lookupTransform("base_link", "odom", ros::Time(0), current_transform);
-      }
-      catch (tf::TransformException ex)
-      {
-        ROS_ERROR("%s",ex.what());
-        break;
-      }
-      tf::Transform relative_transform = start_transform.inverse() * current_transform;
-      tf::Vector3 actual_turn_axis = relative_transform.getRotation().getAxis();
+        //get the current transform
+        try
+        {
+            listener.lookupTransform("base_link", "odom", ros::Time(0), current_transform);
+        }
+        catch (tf::TransformException ex)
+        {
+            ROS_ERROR("%s",ex.what());
+            break;
+        }
+        tf::Transform relative_transform = start_transform.inverse() * current_transform;
+        tf::Vector3 actual_turn_axis = relative_transform.getRotation().getAxis();
       
-      double angle_turned = relative_transform.getRotation().getAngle();
+        double angle_turned = relative_transform.getRotation().getAngle();
       
-      if(fabs(angle_turned) < 1.0e-2) continue;
+        if(fabs(angle_turned) < 1.0e-2) continue;
 
-      if(actual_turn_axis.dot( desired_turn_axis ) < 0)
-		angle_turned = 2 * M_PI - angle_turned;
+        if(actual_turn_axis.dot( desired_turn_axis ) < 0)
+		    angle_turned = 2 * M_PI - angle_turned;
 
-      if(angle_turned > radians)
-		done = true;
+        if(angle_turned > radians) {
+            ROS_INFO("Angle turned: %f", angle_turned);
+            done=true;
+        }
 		
 		ros::spinOnce();
     }
     stop();
     if (done) return true;
     return false;
-  }
+}
 
 int main(int argc, char** argv)
 {
@@ -235,7 +230,7 @@ int main(int argc, char** argv)
 	ros::NodeHandle nh;
 	MoveAlone moving_alone(nh);
 	moving_alone.avanza(1.2f, 0.5f);
-	moving_alone.gira(true, 90.0f, 0.5f);
+	moving_alone.gira(true, 90.0f, 0.2f);
 	moving_alone.avanza(-0.5f, 0.1f);
 	return 0;
 }
