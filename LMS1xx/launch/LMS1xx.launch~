@@ -1,5 +1,5 @@
 <launch>
-  <arg name="host" default="169.254.140.205" />
+  <arg name="host" default="192.168.1.146" />
   <node pkg="lms1xx" name="lms1xx" type="LMS1xx_node" output="screen">
     <param name="host" value="$(arg host)" />
   </node>
