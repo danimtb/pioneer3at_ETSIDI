@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <name>lms1xx</name>
+  <version>0.1.2</version>
+  <description>The lms1xx package contains a basic ROS driver for the SICK LMS1xx line of LIDARs.</description>
+
+  <author>Konrad Banachowicz</author>
+  <maintainer email="mpurvis@clearpathrobotics.com">Mike Purvis</maintainer>
+
+  <license>LGPL</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rosconsole_bridge</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>roscpp_serialization</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <run_depend>rosconsole_bridge</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>roscpp_serialization</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+
+  <export>
+  </export>
+</package>

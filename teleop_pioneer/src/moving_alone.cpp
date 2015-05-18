@@ -229,7 +229,7 @@ int main(int argc, char** argv)
 	ROS_INFO("Moving alone started");
 	ros::NodeHandle nh;
 	MoveAlone moving_alone(nh);
-	moving_alone.avanza(1.2f, 0.5f);
+	moving_alone.avanza(1.0f, 0.5f);
 	moving_alone.gira(true, 90.0f, 0.2f);
 	moving_alone.avanza(-0.5f, 0.1f);
 	return 0;
