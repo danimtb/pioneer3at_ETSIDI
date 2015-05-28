@@ -1,5 +1,6 @@
 <launch>
-  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0.200 0 0.250 0 0 0 base_link laser 1" />
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0.190 0 0.390 0 0 0 base_link laser 1" />
+  <node pkg="tf" type="static_transform_publisher" name="map_to_odom_broadcaster" args="0 0 0 0 0 0 map odom 1" />
  
   <node name="RosAria" pkg="rosaria" type="RosAria" args="_port:=/dev/ttyS0"/>
   <arg name="host" default="192.168.2.100" />
