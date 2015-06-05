@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 	
 	ros::NodeHandle n; 
 	
-	ros::Publisher chatter_pub = n.advertise<geometry_msgs::Twist>("RosAria/cmd_vel", 1);
+	ros::Publisher chatter_pub = n.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
 	Twist vel;
 	
 	ros::Rate r(5);
