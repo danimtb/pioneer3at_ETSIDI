@@ -1,10 +1,16 @@
 <launch>
   <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0.190 0 0.390 0 0 0 base_link laser 1" />
+  </node>
+  
   <node pkg="tf" type="static_transform_publisher" name="map_to_odom_broadcaster" args="0 0 0 0 0 0 map odom 1" />
+  </node>
  
   <node name="RosAria" pkg="rosaria" type="RosAria" args="_port:=/dev/ttyS0"/>
+  </node>
+
   <arg name="host" default="192.168.2.100" />
   <node pkg="lms1xx" name="lms1xx" type="LMS1xx_node" output="screen">
   <param name="host" value="$(arg host)" />
   </node>
+
 </launch>
