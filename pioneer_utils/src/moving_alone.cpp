@@ -66,8 +66,8 @@ MoveAlone::MoveAlone(ros::NodeHandle &n)
 {
 	ROS_INFO("Initializing MoveAlone class");
 	temp=0;
-	publicadorVelocidad = n.advertise<geometry_msgs::Twist>("RosAria/cmd_vel", 2);
-	subscriptorVelocidad = n.subscribe("RosAria/pose", 10, &MoveAlone::getPose, this);
+	publicadorVelocidad = n.advertise<geometry_msgs::Twist>("cmd_vel", 2);
+	subscriptorVelocidad = n.subscribe("pose", 10, &MoveAlone::getPose, this);
 	ROS_INFO("Publisher OK");
 }
 
