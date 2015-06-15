@@ -2,12 +2,10 @@
 	<master auto="start"/>
 	
 	<!-- Run the map server (you can run it here or in another terminal) -->
-        <node name="map_node" pkg="map_server" type="map_server" args="$(find teleop_pioneer)/map.yaml" respawn="false">
-        <param name="frame_id" value="/odom" />
-        </node>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find pioneer_utils)/map.yaml"/>
 
 	<!--- Run AMCL -->
-	<include file="$(find amcl)/examples/amcl_diff.launch" />
+	<include file="$(find p2os_launch)/launch/amcl.launch" />
 	
 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 		<rosparam file="$(find p2os_launch)/launch/costmap_common_params_p3at.yaml" command="load" ns="global_costmap" />
