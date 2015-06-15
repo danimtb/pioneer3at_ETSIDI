@@ -7,7 +7,7 @@
         </node>
 
 	<!--- Run AMCL -->
-	<include file="$(find p2os_launch)/launch/amcl.launch" />
+	<include file="$(find amcl)/examples/amcl_diff.launch" />
 	
 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
 		<rosparam file="$(find p2os_launch)/launch/costmap_common_params_p3at.yaml" command="load" ns="global_costmap" />
