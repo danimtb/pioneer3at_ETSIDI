@@ -6,7 +6,12 @@
 
 
 #<!-- Starting p2os driver for motors and encoders -->
-  <node name="rosaria" pkg="rosaria" type="RosAria">
+  <node name="rosaria" pkg="rosaria" type="RosAria" args="_port:=/dev/ttyS0">
+  <rosparam>
+      TicksMM: 132
+      RevCount: 363000
+      DriftFactor: 0
+  </rosparam>
   <remap from="~cmd_vel" to="cmd_vel"/>
   </node>
 
@@ -14,6 +19,6 @@
   <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
 
 #<!-- Launching LMS1xx_node for laser Sick LMS100 via ethernet -->
-  #<!-- include file="$(find lms1xx)/launch/LMS1xx.launch"/ -->
+  <include file="$(find lms1xx)/launch/LMS1xx.launch"/>
 
 </launch>
