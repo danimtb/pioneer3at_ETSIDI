@@ -8,8 +8,8 @@
 #<!-- Starting p2os driver for motors and encoders -->
   <node name="rosaria" pkg="rosaria" type="RosAria" args="_port:=/dev/ttyS0">
   <rosparam>
-      TicksMM: 132
-      RevCount: 363000
+      TicksMM: 166
+      RevCount: 37350
       DriftFactor: 0
   </rosparam>
   <remap from="~cmd_vel" to="cmd_vel"/>
