@@ -6,7 +6,7 @@
 
 
 #<!-- Starting p2os driver for motors and encoders -->
-  <node name="rosaria" pkg="rosaria" type="RosAria" args="_port:=/dev/ttyS0">
+  <node name="rosaria" pkg="rosaria" type="RosAria" args="_port:=/dev/ttyUSB0">
   <rosparam>
       TicksMM: 166
       RevCount: 37350
