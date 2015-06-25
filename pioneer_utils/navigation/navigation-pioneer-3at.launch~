@@ -2,7 +2,7 @@
 	<master auto="start"/>
 	
 	<!-- Run the map server (you can run it here or in another terminal) -->
-	<node name="map_server" pkg="map_server" type="map_server" args="$(find pioneer_utils)/maps/clearmap.yaml"/>
+	<node name="map_server" pkg="map_server" type="map_server" args="$(find pioneer_utils)/clearmap.yaml"/>
 
 	<!--- Run AMCL -->
 	<include file="$(find pioneer_utils)/navigation/amcl.launch"/>

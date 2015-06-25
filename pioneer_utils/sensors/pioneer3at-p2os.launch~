@@ -1,0 +1,19 @@
+<launch>
+
+#--------------Transform /base_link to /laser frame ---------------------------
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0.190 0 0.390 0 0 0 base_link laser 1" />
+  <node pkg="tf" type="static_transform_publisher" name="base_to_camera_broadcaster" args="0.190 0 0.420 0 0 0 base_link camera_link 1" />
+
+#--------------Starting p2os driver for motors and encoders----------------------
+  <node name="p2os_driver" pkg="p2os_driver" type="p2os_driver" args="_pulse:=1.0"/>
+
+#--------------Launching p2os RobotModel ------------------------------------
+  <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
+
+#--------------Launching LMS1xx_node for laser Sick LMS100 via ethernet------------
+  <include file="$(find pioneer_utils)/sensors/LMS1xx.launch"/>
+
+#<!-- Launch kinect and depthimage_to_laser node -->
+  <include file="$(find pioneer_utils)/sensors/kinect_to_laser.launch"/>
+
+</launch>

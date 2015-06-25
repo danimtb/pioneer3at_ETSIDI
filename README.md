@@ -4,6 +4,9 @@ pioneer3at_ETSIDI: Pioneer 3 AT setup at ETSIDI-UPM
 
 This repo hosts ROS packages working on Indigo version. This packages are needed to setup a CATKIN workspace  and include all files needed for Pioneer 3 AT robot at ETSIDI-UPM university.
 
+####Navigation Video Demo
+[![Pioneer 3 AT navigation using ROS + Laser + Kinect ](http://img.youtube.com/vi/vXFqmWmqZSs/0.jpg)](http://www.youtube.com/watch?v=vXFqmWmqZSs)
+
 Submodules
 ----------------
 Pioneer 3 AT uses the following additional ROS packages showed up as git submodules:
@@ -33,7 +36,7 @@ Follow steps in a terminal:
 
 Content: pioneer_utils
 ---------------
-This repo mainly adds some config specific parameters to keep all things working. They are stored at pioneer_utils.
+This repo mainly adds some config specific parameters to keep all things working. They are stored at "pioneer_utils".
 
 - Odometry params calibrations used in rosaria.
 
@@ -82,4 +85,5 @@ In other terminal, we'll bring up all drivers for hardware using kinect, laser S
 
 Now, you can start navigation stack with amcl like this:
 
-  ``$ roslaunch pioneer_utils navigation-pioneer3at.launch``
+  ``$ roslaunch pioneer_utils navigation-pioneer-3at.launch``
+

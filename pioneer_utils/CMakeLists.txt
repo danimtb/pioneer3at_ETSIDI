@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pioneer_utils)
-find_package(catkin REQUIRED roscpp std_msgs tf)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs tf actionlib move_base_msgs)
 catkin_package(
 	
 	CATKIN_DEPENDS roscpp rospy std_msgs message_runtime tf
@@ -13,4 +13,8 @@ target_link_libraries(teleop_p3at ${catkin_LIBRARIES})
 
 add_executable(moving_alone src/moving_alone.cpp)
 target_link_libraries(moving_alone ${catkin_LIBRARIES})
+
+add_executable(nav-waypoints src/nav-waypoints.cpp)
+target_link_libraries(nav-waypoints ${catkin_LIBRARIES})
+
 # add_dependencies(teleop_pioneer beginner_tutorials_generate_messages_cpp)

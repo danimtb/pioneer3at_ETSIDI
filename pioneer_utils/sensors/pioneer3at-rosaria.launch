@@ -19,9 +19,9 @@
   <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
 
 #<!-- Launching LMS1xx_node for laser Sick LMS100 via ethernet -->
-  <include file="$(find lms1xx)/launch/LMS1xx.launch"/>
+  <include file="$(find pioneer_utils)/sensors/LMS1xx.launch"/>
 
 #<!-- Launch kinect and depthimage_to_laser node -->
-  <include file=$(find pioneer_utils)/sensors/kinect_to_laser.launch/>
+  <include file="$(find pioneer_utils)/sensors/kinect_to_laser.launch"/>
 
 </launch>
