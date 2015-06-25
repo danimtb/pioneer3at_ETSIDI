@@ -1,0 +1,27 @@
+<launch>
+
+#<!-- Transform /base_link to /laser frame -->
+<node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0.190 0 0.390 0 0 0 base_link laser 1" />
+<node pkg="tf" type="static_transform_publisher" name="base_to_camera_broadcaster" args="0.190 0 0.420 0 0 0 base_link camera_link 1" />
+
+
+#<!-- Starting p2os driver for motors and encoders -->
+  <node name="rosaria" pkg="rosaria" type="RosAria" args="_port:=/dev/ttyUSB0">
+  <rosparam>
+      TicksMM: 166
+      RevCount: 37350
+      DriftFactor: 0
+  </rosparam>
+  <remap from="~cmd_vel" to="cmd_vel"/>
+  </node>
+
+#<!-- Launching p2os RobotModel -->
+  <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
+
+#<!-- Launching LMS1xx_node for laser Sick LMS100 via ethernet -->
+  <include file="$(find lms1xx)/launch/LMS1xx.launch"/>
+
+#<!-- Launch kinect and depthimage_to_laser node -->
+  <include file=$(find pioneer_utils)/sensors/kinect_to_laser.launch/>
+
+</launch>

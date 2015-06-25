@@ -1,3 +1,19 @@
 [submodule "rosaria"]
 	path = rosaria
 	url = https://github.com/amor-ros-pkg/rosaria.git
+[submodule "turtlebot_apps"]
+	path = turtlebot_apps
+	url = https://github.com/turtlebot/turtlebot_apps.git
+[submodule "p2os"]
+	path = p2os
+	url = https://github.com/allenh1/p2os.git
+	branch = indigo-stable
+[submodule "freenect_stack"]
+	path = freenect_stack
+	url = https://github.com/ros-drivers/freenect_stack.git
+[submodule "LMS1xx"]
+	path = LMS1xx
+	url = https://github.com/clearpathrobotics/LMS1xx.git
+[submodule "depthimage_to_laserscan"]
+	path = depthimage_to_laserscan
+	url = https://github.com/ros-perception/depthimage_to_laserscan.git
