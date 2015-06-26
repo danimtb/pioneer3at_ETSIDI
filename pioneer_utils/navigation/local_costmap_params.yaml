@@ -8,4 +8,4 @@ local_costmap:
   width: 6.0
   height: 6.0
   resolution: 0.025
-  inflation_radius: 0.28
+  inflation_radius: 0.25
