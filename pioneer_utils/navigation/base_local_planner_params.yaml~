@@ -9,8 +9,8 @@ TrajectoryPlannerROS:
   path_distance_bias: 0.6
   goal_distance_bias: 0.6
   
-  #meter_scoring: false
-  #publish_cost_grid: false
+  meter_scoring: true
+  publish_cost_grid: true
 
   acc_lim_theta: 3.2
   acc_lim_x: 2.5
