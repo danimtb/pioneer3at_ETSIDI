@@ -48,9 +48,11 @@ Follow steps in a terminal:
 
   4.- ``$ cd ~/catkin_ws``
 
-  5.- ``rosdep install rosaria``
+  5.- ``$ rosdep install rosaria``
 
-  6.- ``rosdep install freenect_launch``
+  6.- ``$ rosdep install freenect_launch``
+
+  7.- ``$ catkin_make`` This will compile all targets placed in you catkin src directory
 
 Content: pioneer_utils
 ---------------

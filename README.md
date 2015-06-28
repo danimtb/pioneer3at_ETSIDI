@@ -54,6 +54,10 @@ Follow steps in a terminal:
 
   7.- ``$ catkin_make`` This will compile all targets placed in you catkin src directory
 
+You'll may also need ros navigation stack:
+
+	``$ sudo apt-get install ros-indigo-navigation``
+
 Content: pioneer_utils
 ---------------
 This repo mainly adds some config specific parameters to keep all things working. They are stored at "pioneer_utils".
