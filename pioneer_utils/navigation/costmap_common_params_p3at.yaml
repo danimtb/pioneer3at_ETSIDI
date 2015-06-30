@@ -26,4 +26,4 @@ sick_lms1xx: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: t
 
 kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan, marking: true, clearing: true, expected_update_rate: 0.334}
 
-#kinect_pointcloud: {sensor_frame: camera_link, data_type: PointCloud2, topic: camera/depth/points, marking: true, clearing: true}
+kinect_pointcloud: {sensor_frame: camera_link, data_type: PointCloud2, topic: camera/depth/points, marking: true, clearing: false}
