@@ -1,12 +1,12 @@
 <launch>
 
 <!-- Starting rosaria driver for motors and encoders -->
-  <include file="$(find pioneer_utils)/sensors/rosaria.launch"/>
+  <include file="$(find pioneer_utils)/follower/follower-pioneer-3at.launch"/>
 
 <!-- Launching LMS1xx_node for laser Sick LMS100 via ethernet -->
   <include file="$(find pioneer_utils)/sensors/LMS1xx.launch"/>
 
-<!-- Launch kinect and depthimage_to_laser node -->
-  <include file="$(find pioneer_utils)/sensors/kinect_to_laser.launch"/>
+<!-- Launch p2os gmapping slam -->
+  <include file="$(find p2os_launch)/launch/gmapping.launch"/>
 
 </launch>
