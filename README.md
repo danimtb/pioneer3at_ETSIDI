@@ -54,9 +54,17 @@ Follow steps in a terminal:
 
   7.- ``$ catkin_make`` This will compile all targets placed in you catkin src directory
 
-You'll may also need ros navigation stack:
+You'll may also need ros navigation stack and gmapping:
 
-	``$ sudo apt-get install ros-indigo-navigation``
+``$ sudo apt-get install ros-indigo-navigation``
+
+``$ sudo apt-get install ros-indigo-gmapping``
+
+For turtlebot applications to compile and run:
+
+``$ rosdep install turtlebot``
+
+``$ rosdep install turtlebot_teleop``
 
 Content: pioneer_utils
 ---------------
@@ -72,7 +80,7 @@ This repo mainly adds some config specific parameters to keep all things working
 
 - depthimage to scan config.
 
-And implements easy to use tiny nodes:
+And implements easy to use nodes:
 
 - Teleoperation node.
 
@@ -97,6 +105,8 @@ After clonning this github repo in your catkin_ws src/ directory do the followin
 
 ``$ catkin_make``
 
+####Navigation Stack
+
 Now run "roscore" and the nodes needed with the .launch file you'll find in src/ directory.
 
 In your terminal run "roscore":
@@ -110,4 +120,22 @@ In other terminal, we'll bring up all drivers for hardware using kinect, laser S
 Now, you can start navigation stack with amcl like this:
 
   ``$ roslaunch pioneer_utils navigation-pioneer-3at.launch``
+
+####Pioneer 3 AT Follower (from turtlebot)
+
+Open a terminal and launch the follower:
+
+``$ roslaunch pioneer_utils follower-pioneer-3at.launch``
+
+If you want to guide your robot following you to build a map, run instead:
+
+``$ roslaunch pioneer_utils gmapping-follower.launch``
+
+####Pioneer 3 AT Panorama (from turtlebot)
+
+Open a terminal and launch the panorama:
+
+``$ roslaunch pioneer_utils panorama-pioneer-3at.launch``
+
+Follow [turtlebot's panorama wiki](http://wiki.ros.org/turtlebot_panorama/Tutorials/Demo) to know how to use this and take nice panorama pics. Also see [turtlebot_panorama API](http://wiki.ros.org/turtlebot_panorama).
 
