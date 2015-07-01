@@ -1,15 +1,8 @@
-obstacle_range: 10.0
-raytrace_range: 10.0
+obstacle_range: 4.0
+raytrace_range: 0.6
+
 max_obstacle_height: 0.5
 
 footprint: [ [0.254, -0.230], [-0.254, -0.230], [-0.254, 0.230], [0.254, 0.230] ]
 
-transform_tolerance: 0.2
-
-observation_sources: sick_lms1xx kinect_laser
-
-sick_lms1xx: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, expected_update_rate: 0.08}
-
-kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan, marking: true, clearing: true, expected_update_rate: 0.334}
-
-kinect_pointcloud: {sensor_frame: camera_link, data_type: PointCloud2, topic: camera/depth/points, marking: true, clearing: false}
+transform_tolerance: 0.3
