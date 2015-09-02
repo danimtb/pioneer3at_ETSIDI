@@ -6,26 +6,7 @@
   <group unless="$(arg simulation)"> <!-- Real robot -->
     <!-- <include file="$(find turtlebot_follower)/launch/includes/velocity_smoother.launch.xml"/> -->
     <!-- include file="$(find turtlebot_follower)/launch/includes/safety_controller.launch.xml"/> -->
-
-    <param name="camera/rgb/image_color/compressed/jpeg_quality" value="22"/>
-
-    <!-- Call rosaria node for pioneer 3 AT ETSIDI -->
-    <!-- include file="$(find pioneer_utils)/sensors/rosaria.launch"/ -->
     
-    <include file="$(find pioneer_utils)/sensors/kinect_3dsensor.launch">
-      <arg name="rgb_processing"                  value="true"/>  <!-- only required if we use android client -->
-      <arg name="depth_processing"                value="true"/>
-      <arg name="depth_registered_processing"     value="false"/>
-      <arg name="depth_registration"              value="false"/>
-      <arg name="disparity_processing"            value="false"/>
-      <arg name="disparity_registered_processing" value="false"/>
-      <arg name="scan_processing"                 value="false"/>
-    </include>
-
-    <!-- Make a slower camera feed available; only required if we use android client -->
-    <node pkg="topic_tools" type="throttle" name="camera_throttle"
-          args="messages camera/rgb/image_color/compressed 5"/>
-
   <!--  Load turtlebot follower into the 3d sensors nodelet manager to avoid pointcloud serializing -->
     <node pkg="nodelet" type="nodelet" name="turtlebot_follower"
           args="load turtlebot_follower/TurtlebotFollower camera/camera_nodelet_manager">
