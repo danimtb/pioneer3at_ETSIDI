@@ -2,12 +2,7 @@
 
 <launch>
 
-    <arg name="camera" default="camera" />
-
-    <!-- start sensor-->
-    <include file="$(find freenect_launch)/launch/freenect.launch">
-        <arg name="camera" default="$(arg camera)"/>
-    </include>
+    <include file="$(find freenect_launch)/launch/freenect.launch"/>
 
     <!-- run depthimage_to_laserscan node -->
     <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
@@ -18,8 +13,8 @@
         <rosparam>
             scan_height: 200
             scan_time: 0.167
-            range_min: 0.45
-            range_max: 6.5
+            range_min: 1.4
+            range_max: 5.0
         </rosparam>
 
     </node>
