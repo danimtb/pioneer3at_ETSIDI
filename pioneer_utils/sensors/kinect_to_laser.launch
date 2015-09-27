@@ -2,19 +2,16 @@
 
 <launch>
 
-    <include file="$(find freenect_launch)/launch/freenect.launch"/>
-
     <!-- run depthimage_to_laserscan node -->
     <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
         <remap from="image" to="/camera/depth/image_raw"/>
         <remap from="camera_info" to="/camera/depth/camera_info"/>
-        <remap from="scan" to="camera/scan"/>
+        <remap from="scan" to="camera/scan_depth"/>
 
         <rosparam>
-            scan_height: 200
+            scan_height: 100
             scan_time: 0.167
-            range_min: 1.4
-            range_max: 5.0
+            range_max: 4.0
         </rosparam>
 
     </node>

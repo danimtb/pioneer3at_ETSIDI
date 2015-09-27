@@ -1,18 +1,180 @@
 <?xml version="1.0"?>
+<!-- Revolute-Revolute Manipulator -->
+<robot name="pioneer3at" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
-       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
-       xmlns:xacro="http://ros.org/wiki/xacro"
-name="pioneer3at">
+	<!-- Constants for robot dimensions -->
+	<xacro:property name="PI" value="3.1415926535897931"/>
+	<xacro:property name="width" value="0.1" /> <!-- Square dimensions (widthxwidth) of beams -->
+	<xacro:property name="camera_link" value="0.05" /> <!-- Size of square 'camera' box -->
+	<xacro:property name="axel_offset" value="0.05" /> <!-- Space btw top of beam and the each joint -->
 
-<include filename="$(find pioneer_utils)/gazebo/pioneer3at_body.xacro"/>
+	<!-- Import all Gazebo-customization elements, including Gazebo colors -->
+	<xacro:include filename="$(find pioneer_utils)/gazebo/pioneer3at.gazebo" />
+	<!-- Import Rviz colors -->
+	<xacro:include filename="$(find pioneer_utils)/gazebo/materials.xacro" />
+	
+	<!-- Import xacro:macro for wheels -->
+	<xacro:include filename="$(find pioneer_utils)/gazebo/pioneer3at_wheels.xacro" />
 
-<xacro:p3at_front suffix="left" reflect="1"/>
-<xacro:p3at_front suffix="right" reflect="-1"/>
-<xacro:p3at_back suffix="left" reflect="1"/>
-<xacro:p3at_back suffix="right" reflect="-1"/>
-<xacro:p3at_gazebo_ext/>
+	<!-- Chassis -->
+	<link name="base_link">
+		<inertial>
+			<mass value="10.0"/>
+			<origin xyz="0 0 0.177"/>
+			<inertia ixx="0.3338" ixy="0.0" ixz="0.0"
+				 iyy="0.4783" iyz="0.0"
+				 izz="0.3338"/>
+		</inertial>
+		<visual name="base_visual">
+			<origin xyz="0 0 0.177" rpy="0 0 0"/>
+			<geometry name="pioneer_geom">
+				<mesh filename="package://p2os_urdf/meshes/p3at_meshes/chassis.stl"/>
+			</geometry>
+			<material name="ChassisRed">
+				<color rgba="0.851 0.0 0.0 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0.177" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://p2os_urdf/meshes/p3at_meshes/chassis.stl"/>
+				</geometry>
+		</collision>
+	</link>
+	
 
+	<!-- Top -->
+	<link name="top_plate">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="-0.025 0 -0.223"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="top_visual">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry name="pioneer_geom">
+				<mesh filename="package://p2os_urdf/meshes/p3at_meshes/top.stl"/>
+			</geometry>
+			<material name="TopBlack">
+					<color rgba="0.038 0.038 0.038 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0 0 0"/>
+			</geometry>
+		</collision>
+	</link>
+
+
+	<joint name="base_top_joint" type="fixed">
+		<origin xyz="0.003 0 0.274" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="top_plate"/>
+	</joint>
+	
+	<joint name="hokuyo_joint" type="fixed">
+		<axis xyz="0 1 0" />
+		<origin xyz="0.2 0 0.4" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="laser"/>
+	</joint>
+
+	<!-- Hokuyo Laser -->
+	<link name="laser">
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.1 0.1 0.16"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin xyz="0 0 -0.06" rpy="3.141592 0 0"/>
+			<geometry>
+				<mesh filename="package://pioneer_utils/gazebo/meshes/sick_lms100.dae"/>
+			</geometry>
+		</visual>
+
+		<inertial>
+			<mass value="1e-5" />
+			<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+		</inertial>
+	</link>
+	
+	<xacro:p3at_front suffix="left" reflect="1"/>
+	<xacro:p3at_front suffix="right" reflect="-1"/>
+	<xacro:p3at_back suffix="left" reflect="1"/>
+	<xacro:p3at_back suffix="right" reflect="-1"/>
+
+	<joint name="camera_joint" type="fixed">
+		<axis xyz="0 1 0" />
+		<origin xyz="0.2 0 0.47" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="camera_link"/>
+	</joint>
+
+	<!-- Camera -->
+	<link name="camera_link">
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.07271 0.27794 0.073"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin xyz="0 0 -0.01" rpy="0 0 1.570796"/>
+			<geometry>
+				<mesh filename="package://pioneer_utils/gazebo/meshes/kinect.dae"/>
+			</geometry>
+		</visual>
+
+		<inertial>
+			<mass value="0.546" />
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<inertia ixx="0.003881243" ixy="0" ixz="0" iyy="0.000498940" iyz="0" izz="0.003879257" />
+		</inertial>
+	</link>
+
+<!-- from turtlebot!! -->
+	<joint name="camera_rgb_joint" type="fixed">
+		<origin xyz="-0.087 -0.0125 0.2870" rpy="0 0 0"/>
+		<parent link="camera_link"/>
+		<child link="camera_rgb_frame"/>
+	</joint>
+	
+	<link name="camera_rgb_frame"/>
+
+	<joint name="camera_rgb_optical_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="-1.570796 0 -1.570796" />
+		<parent link="camera_rgb_frame" />
+		<child link="camera_rgb_optical_frame" />
+	</joint>
+
+	<link name="camera_rgb_optical_frame"/>
+
+
+    <!-- The fixed joints & links below are usually published by static_transformers launched by the OpenNi launch 
+         files. However, for Gazebo simulation we need them, so we add them here.
+         (Hence, don't publish them additionally!) -->
+	<joint name="camera_depth_joint" type="fixed">
+		<origin xyz="0 -0.0250 0" rpy="0 0 0" />
+		<parent link="camera_link" />
+		<child link="camera_depth_frame" />
+	</joint>
+	
+	<link name="camera_depth_frame"/>
+
+	<joint name="camera_depth_optical_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="-1.570796 0 -1.570796" />
+		<parent link="camera_depth_frame" />
+		<child link="camera_depth_optical_frame" />
+	</joint>
+	
+	<link name="camera_depth_optical_frame"/>
 
 </robot>

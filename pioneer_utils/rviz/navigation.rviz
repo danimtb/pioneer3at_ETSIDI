@@ -7,7 +7,6 @@ Panels:
         - /Global Options1
         - /Status1
         - /Camera Scan1
-        - /Camera Scan1/Status1
         - /Planner Plan1
         - /Current Goal1
         - /PoseArray1
@@ -214,8 +213,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: -0.03
-        Min Value: -0.03
+        Max Value: 0.39
+        Min Value: 0.39
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -328,7 +327,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: camera_link
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -357,7 +356,7 @@ Visualization Manager:
         Value: false
       Name: Current View
       Near Clip Distance: 0.01
-      Scale: 119.086
+      Scale: 39.9617
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz)
       X: 2.58935

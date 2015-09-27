@@ -1,8 +1,5 @@
 <launch>
 
-  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="0.190 0 0.390 0 0 0 base_link laser 1" />
-  <node pkg="tf" type="static_transform_publisher" name="base_to_camera_broadcaster" args="0.190 0 0.420 0 0 0 base_link camera_link 1" />
-
 <!-- Starting rosaria driver for motors and encoders -->
   <node name="rosaria" pkg="rosaria" type="RosAria" args="_port:=/dev/ttyUSB0">
   <rosparam>
@@ -12,8 +9,5 @@
   </rosparam>
   <remap from="~cmd_vel" to="cmd_vel"/>
   </node>
-
-<!-- Launching p2os RobotModel -->
-  <include file="$(find p2os_urdf)/launch/pioneer3at_urdf.launch"/>
 
 </launch>
