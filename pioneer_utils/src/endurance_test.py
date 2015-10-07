@@ -28,11 +28,14 @@ Originally from 'ROS by example' http://code.google.com/p/ros-by-example/source/
 Pi Robot BLOG: http://www.pirobot.org/blog/0025/
 """
 
-import roslib; roslib.load_manifest('rbx1_nav')
+import roslib
 import rospy
 import actionlib
+import tf
+import os
 from actionlib_msgs.msg import *
 from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, Point, Quaternion, Twist
+from nav_msgs.msg import Odometry
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from random import sample
 from math import pow, sqrt
@@ -46,8 +49,14 @@ class NavTest():
         # How long in seconds should the robot pause at each location?
         self.rest_time = rospy.get_param("~rest_time", 10)
         
-        # Are we running in the fake simulator?
-        self.fake_test = rospy.get_param("~fake_test", False)
+        # .txt file with name and x, y coordinates for location
+        self.map_locations = rospy.get_param("~map_locations")
+        
+        # odometry topic name
+        self.odometry_topic = rospy.get_param("~odometry_topic", "odom")
+        
+        # cmd_vel topic name
+        self.cmd_vel_topic = rospy.get_param("~cmd_vel_topic", "cmd_vel")
         
         # Goal state return values
         goal_states = ['PENDING', 'ACTIVE', 'PREEMPTED', 
@@ -62,15 +71,14 @@ class NavTest():
         # that was used to launch RViz.
         locations = dict()
         
-        locations['hall_foyer'] = Pose(Point(0.643, 4.720, 0.000), Quaternion(0.000, 0.000, 0.223, 0.975))
-        locations['hall_kitchen'] = Pose(Point(-1.994, 4.382, 0.000), Quaternion(0.000, 0.000, -0.670, 0.743))
-        locations['hall_bedroom'] = Pose(Point(-3.719, 4.401, 0.000), Quaternion(0.000, 0.000, 0.733, 0.680))
-        locations['living_room_1'] = Pose(Point(0.720, 2.229, 0.000), Quaternion(0.000, 0.000, 0.786, 0.618))
-        locations['living_room_2'] = Pose(Point(1.471, 1.007, 0.000), Quaternion(0.000, 0.000, 0.480, 0.877))
-        locations['dining_room_1'] = Pose(Point(-0.861, -0.019, 0.000), Quaternion(0.000, 0.000, 0.892, -0.451))
+
+        fh=open(self.map_locations)
+        for line in fh:
+            line=line.rstrip().split()
+            locations[line[0]] = Pose(Point(float(line[1]), float(line[2]), 0.000), Quaternion(*tf.transformations.quaternion_from_euler(0, 0, 0)))
         
         # Publisher to manually control the robot (e.g. to stop it)
-        self.cmd_vel_pub = rospy.Publisher('cmd_vel', Twist)
+        self.cmd_vel_pub = rospy.Publisher(self.cmd_vel_topic, Twist)
         
         # Subscribe to the move_base action server
         self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
@@ -81,6 +89,9 @@ class NavTest():
         self.move_base.wait_for_server(rospy.Duration(60))
         
         rospy.loginfo("Connected to move base server")
+
+        # Subscribe to odometry to know travel distance
+        rospy.Subscriber(self.odometry_topic, Odometry, self.distance_callback)
         
         # A variable to hold the initial pose of the robot to be set by 
         # the user in RViz
@@ -92,22 +103,13 @@ class NavTest():
         n_goals = 0
         n_successes = 0
         i = n_locations
-        distance_traveled = 0
+        self.distance= 0
         start_time = rospy.Time.now()
         running_time = 0
         location = ""
         last_location = ""
-        
-        # Get the initial pose from the user
-        rospy.loginfo("*** Click the 2D Pose Estimate button in RViz to set the robot's initial pose...")
-        rospy.wait_for_message('initialpose', PoseWithCovarianceStamped)
-        self.last_location = Pose()
-        rospy.Subscriber('initialpose', PoseWithCovarianceStamped, self.update_initial_pose)
-        
-        # Make sure we have the initial pose
-        while initial_pose.header.stamp == "":
-            rospy.sleep(1)
-            
+        self.last_pose = Odometry()
+                   
         rospy.loginfo("Starting navigation test")
         
         # Begin the main loop and run through a sequence of locations
@@ -124,22 +126,7 @@ class NavTest():
             
             # Get the next location in the current sequence
             location = sequence[i]
-                        
-            # Keep track of the distance traveled.
-            # Use updated initial pose if available.
-            if initial_pose.header.stamp == "":
-                distance = sqrt(pow(locations[location].position.x - 
-                                    locations[last_location].position.x, 2) +
-                                pow(locations[location].position.y - 
-                                    locations[last_location].position.y, 2))
-            else:
-                rospy.loginfo("Updating current pose.")
-                distance = sqrt(pow(locations[location].position.x - 
-                                    initial_pose.pose.pose.position.x, 2) +
-                                pow(locations[location].position.y - 
-                                    initial_pose.pose.pose.position.y, 2))
-                initial_pose.header.stamp = ""
-            
+                                  
             # Store the last location for distance calculations
             last_location = location
             
@@ -171,7 +158,6 @@ class NavTest():
                 if state == GoalStatus.SUCCEEDED:
                     rospy.loginfo("Goal succeeded!")
                     n_successes += 1
-                    distance_traveled += distance
                     rospy.loginfo("State:" + str(state))
                 else:
                   rospy.loginfo("Goal failed with error code: " + str(goal_states[state]))
@@ -181,11 +167,8 @@ class NavTest():
             running_time = running_time.secs / 60.0
             
             # Print a summary success/failure, distance traveled and time elapsed
-            rospy.loginfo("Success so far: " + str(n_successes) + "/" + 
-                          str(n_goals) + " = " + 
-                          str(100 * n_successes/n_goals) + "%")
-            rospy.loginfo("Running time: " + str(trunc(running_time, 1)) + 
-                          " min Distance: " + str(trunc(distance_traveled, 1)) + " m")
+            rospy.loginfo("Success so far: " + str(n_successes) + "/" + str(n_goals) + " = " + str(100 * n_successes/n_goals) + "%")
+            rospy.loginfo("Running time: " + str(trunc(running_time, 1)) + " min | Distance: " + str(trunc(self.distance, 1)) + " m")
             rospy.sleep(self.rest_time)
             
     def update_initial_pose(self, initial_pose):
@@ -197,6 +180,12 @@ class NavTest():
         rospy.sleep(2)
         self.cmd_vel_pub.publish(Twist())
         rospy.sleep(1)
+
+    def distance_callback(self, now_pose):
+    	# Keep track of the distance traveled.
+        self.distance += sqrt(pow(now_pose.pose.pose.position.x - self.last_pose.pose.pose.position.x, 2) + pow(now_pose.pose.pose.position.y - self.last_pose.pose.pose.position.y, 2))
+        self.last_pose = now_pose
+        
       
 def trunc(f, n):
     # Truncates/pads a float f to n decimal places without rounding
@@ -209,4 +198,5 @@ if __name__ == '__main__':
         rospy.spin()
     except rospy.ROSInterruptException:
         rospy.loginfo("AMCL navigation test finished.")
+
 

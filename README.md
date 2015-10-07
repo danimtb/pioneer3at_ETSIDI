@@ -5,7 +5,10 @@ pioneer3at_ETSIDI: Pioneer 3 AT setup at ETSIDI-UPM
 This repo hosts ROS packages working on Indigo version. This packages are needed to setup a CATKIN workspace  and include all files needed for Pioneer 3 AT robot at ETSIDI-UPM university.
 
 ####Navigation Video Demo
-[![Pioneer 3 AT navigation using ROS + Laser + Kinect ](http://img.youtube.com/vi/vXFqmWmqZSs/0.jpg)](http://www.youtube.com/watch?v=vXFqmWmqZSs)
+[![Pioneer 3 AT navigation using ROS + Laser + Kinect](http://img.youtube.com/vi/vXFqmWmqZSs/0.jpg)](http://www.youtube.com/watch?v=vXFqmWmqZSs)
+
+####First navigation steps compilation
+[![Pioneer 3 AT first steps with ROS navigation](http://img.youtube.com/vi/w9qAdscY48k/0.jpg)](https://www.youtube.com/watch?v=w9qAdscY48k)
 
 Submodules
 ----------------
@@ -138,4 +141,17 @@ Open a terminal and launch the panorama:
 ``$ roslaunch pioneer_utils panorama-pioneer-3at.launch``
 
 Follow [turtlebot's panorama wiki](http://wiki.ros.org/turtlebot_panorama/Tutorials/Demo) to know how to use this and take nice panorama pics. Also see [turtlebot_panorama API](http://wiki.ros.org/turtlebot_panorama).
+
+Gazebo Simulation
+-----------------
+
+####Pioneer 3 AT Follower (from turtlebot)
+
+Open a terminal and launch the follower:
+
+``$ roslaunch pioneer_utils pioneer3at_gazebo_world.launch``
+
+If you want to do some navigation with Willow Garage's map type in other terminal:
+
+``$ roslaunch pioneer_utils pioneer3at_gazebo_world.launch``
 

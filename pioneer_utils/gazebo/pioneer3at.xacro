@@ -78,7 +78,7 @@
 	
 	<joint name="hokuyo_joint" type="fixed">
 		<axis xyz="0 1 0" />
-		<origin xyz="0.2 0 0.4" rpy="0 0 0"/>
+		<origin xyz="-0.19 0 0.4" rpy="0 0 3.141592"/>
 		<parent link="base_link"/>
 		<child link="laser"/>
 	</joint>
@@ -112,7 +112,7 @@
 
 	<joint name="camera_joint" type="fixed">
 		<axis xyz="0 1 0" />
-		<origin xyz="0.2 0 0.47" rpy="0 0 0"/>
+		<origin xyz="-0.04 0 0.40" rpy="0 0 0"/>
 		<parent link="base_link"/>
 		<child link="camera_link"/>
 	</joint>
@@ -122,7 +122,7 @@
 		<collision>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<box size="0.07271 0.27794 0.073"/>
+				<box size="0.07271 0.21 0.073"/>
 			</geometry>
 		</collision>
 
