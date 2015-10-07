@@ -108,7 +108,9 @@ And implements easy to use nodes:
 
 - endurance_test node: implements randomly navigation to a list of points
 
-	See launch file template: ``roslaunch pioneer_utils endurance_test.launch"
+	See launch file template:
+		
+		``roslaunch pioneer_utils endurance_test.launch"
 
 	List of points as *map_locations.txt* rosparam.
     
@@ -168,7 +170,7 @@ If you want to do some navigation with Willow Garage's map type in other termina
 
 ``$ roslaunch pioneer_utils pioneer3at_gazebo_world.launch``
 
-![gazebo with obstacles](https://github.com/danimtb/pioneer3at_ETSIDI/tree/master/pioneer_utils/gazebo/gazebo_2015-10-05 19:47:40.png)
+![gazebo with obstacles](https://github.com/danimtb/pioneer3at_ETSIDI/tree/master/pioneer_utils/gazebo/snapshots/gazebo_2015-10-05 19:47:40.png)
 
-![gazebo willow garage world](https://github.com/danimtb/pioneer3at_ETSIDI/tree/master/pioneer_utils/gazebo/gazebo_2015-09-21 01:17:58.png)
+![gazebo willow garage world](https://github.com/danimtb/pioneer3at_ETSIDI/tree/master/pioneer_utils/gazebo/snapshots/gazebo_2015-09-21 01:17:58.png)
 
