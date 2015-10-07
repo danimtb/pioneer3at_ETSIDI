@@ -16,6 +16,8 @@ Pioneer 3 AT uses the following additional ROS packages showed up as git submodu
 
 - [rosaria](https://github.com/amor-ros-pkg/rosaria): Interface with Aria library to control motors, battery and encoders. (See [rosaria docs](http://wiki.ros.org/ROSARIA))
 
+- [p2os(indigo-stable)](https://github.com/allenh1/p2os/tree/indigo-stable): package with some useful configurations for navigation and pioneer urdf models. (See [p2os docs](http://wiki.ros.org/p2os)).
+
 - [LMS1xx](https://github.com/clearpathrobotics/LMS1xx): Sick ROS drivers from ClearPath Robotics to use Sick LMS100 ethernet laser scanner. (See [LMS1xx docs](http://wiki.ros.org/LMS1xx)).
 
 - [freenect_stack](https://github.com/ros-drivers/freenect_stack): For Kinect 1 XBOX 360, (See [freenect_stack docs](http://wiki.ros.org/freenect_stack) and [freenect_launch docs](http://wiki.ros.org/freenect_launch)).
@@ -70,18 +72,25 @@ For turtlebot applications to compile and run:
 ``$ rosdep install turtlebot_teleop``
 
 Content: pioneer_utils
----------------
-This repo mainly adds some config specific parameters to keep all things working. They are stored at "pioneer_utils".
+----------------------
+This is the core of my work. **pioneer_utils** mainly adds some configuration specific parameters to keep all things working.
+
 
 - Odometry params calibrations used in rosaria.
 
 - Laser IP address.
 
-- Pioneer URDF model from p2os package.
+- Pioneer URDF model with Sick Laser and Kinect.
 
 - Navigation tweaks in costmaps, base and planners.
 
-- depthimage to scan config.
+- depthimage to scan configs (for low, medium and long range obstacles).
+
+- Gazebo settings and launch files with gazebo plugins and urdf model.
+
+- Maps used at ETSIDI-UPM Lab and in gazebo Willow Garage world.
+
+- RViz launch files with specific visualization configs.
 
 And implements easy to use nodes:
 
@@ -93,14 +102,20 @@ And implements easy to use nodes:
 
 	  ``rosrun pioneer_utils moving_alone``
 
-- nav-waypoints node: Send point goals to navigation stack.
+- nav-waypoints node (navigation_goals): Send global or local goals to navigation stack.
 
 	  ``rosrun pioneer_utils nav-waypoints``
+
+- endurance_test node: implements randomly navigation to a list of points
+
+	See launch file template: ``roslaunch pioneer_utils endurance_test.launch"
+
+	List of points as *map_locations.txt* rosparam.
     
 Usage
 -----
 
-This repo is intended to be a simple method to setup and run everything needed to use Pioneer 3 AT.
+This repository is intended to be a simple method to setup and run everything needed to use Pioneer 3 AT.
 
 After clonning this github repo in your catkin_ws src/ directory do the following:
 
@@ -118,17 +133,17 @@ In your terminal run "roscore":
 
 In other terminal, we'll bring up all drivers for hardware using kinect, laser Sick, and Rosaria with calibration config setup:
 
-  ``$ roslaunch pioneer_utils pioneer3at.launch``
+  ``$ roslaunch pioneer_utils pioneer3at-rosaria.launch``
 
 Now, you can start navigation stack with amcl like this:
 
-  ``$ roslaunch pioneer_utils navigation-pioneer-3at.launch``
+  ``$ roslaunch pioneer_utils navigation_pioneer-3at.launch``
 
 ####Pioneer 3 AT Follower (from turtlebot)
 
 Open a terminal and launch the follower:
 
-``$ roslaunch pioneer_utils follower-pioneer-3at.launch``
+``$ roslaunch pioneer_utils simple_follower.launch``
 
 If you want to guide your robot following you to build a map, run instead:
 
@@ -145,8 +160,6 @@ Follow [turtlebot's panorama wiki](http://wiki.ros.org/turtlebot_panorama/Tutori
 Gazebo Simulation
 -----------------
 
-####Pioneer 3 AT Follower (from turtlebot)
-
 Open a terminal and launch the follower:
 
 ``$ roslaunch pioneer_utils pioneer3at_gazebo_world.launch``
@@ -154,4 +167,8 @@ Open a terminal and launch the follower:
 If you want to do some navigation with Willow Garage's map type in other terminal:
 
 ``$ roslaunch pioneer_utils pioneer3at_gazebo_world.launch``
+
+![gazebo with obstacles](https://github.com/danimtb/pioneer3at_ETSIDI/tree/master/pioneer_utils/gazebo/gazebo_2015-10-05 19:47:40.png)
+
+![gazebo willow garage world](https://github.com/danimtb/pioneer3at_ETSIDI/tree/master/pioneer_utils/gazebo/gazebo_2015-09-21 01:17:58.png)
 
