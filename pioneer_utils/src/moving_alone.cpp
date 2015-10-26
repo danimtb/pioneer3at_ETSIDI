@@ -1,8 +1,6 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
-
-#include "rosaria/BumperState.h"
 #include <tf/transform_listener.h>
 
 using geometry_msgs::Twist;

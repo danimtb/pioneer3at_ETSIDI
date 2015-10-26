@@ -23,3 +23,9 @@
 [submodule "turtlebot_msgs"]
 	path = turtlebot_msgs
 	url = https://github.com/turtlebot/turtlebot_msgs.git
+[submodule "audio_common"]
+	path = audio_common
+	url = https://github.com/ros-drivers/audio_common.git
+[submodule "pocketsphinx"]
+	path = pocketsphinx
+	url = https://github.com/mikeferguson/pocketsphinx.git

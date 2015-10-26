@@ -15,6 +15,10 @@
 	
 	<!-- Import xacro:macro for wheels -->
 	<xacro:include filename="$(find pioneer_utils)/gazebo/pioneer3at_wheels.xacro" />
+	
+	<!-- Import xacro:macro for pilars -->
+	<xacro:include filename="$(find pioneer_utils)/gazebo/pioneer3at_pilars.xacro" />
+
 
 	<!-- Chassis -->
 	<link name="base_link">
@@ -69,24 +73,121 @@
 		</collision>
 	</link>
 
-
 	<joint name="base_top_joint" type="fixed">
 		<origin xyz="0.003 0 0.274" rpy="0 0 0"/>
 		<parent link="base_link"/>
 		<child link="top_plate"/>
 	</joint>
 	
-	<joint name="hokuyo_joint" type="fixed">
-		<axis xyz="0 1 0" />
-		<origin xyz="-0.19 0 0.4" rpy="0 0 3.141592"/>
-		<parent link="base_link"/>
-		<child link="laser"/>
+	
+	<!-- Long pilars -->
+	<xacro:longpilar_front suffix="left" reflect="1"/>
+	<xacro:longpilar_front suffix="right" reflect="-1"/>
+	
+	
+	<!-- Side_left -->
+	<link name="side_plate_left">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="0 0 0"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="side_visual">
+			<origin xyz="0 0 0" rpy="1.57079 0 0"/>
+			<geometry name="pioneer_geom">
+				<mesh filename="package://pioneer_utils/gazebo/meshes/lateral.stl"/>
+			</geometry>
+			<material name="ChassisRed">
+				<color rgba="0.8 0.0 0.0 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="1.57079 0 0"/>
+			<geometry>
+				<mesh filename="package://pioneer_utils/gazebo/meshes/lateral.stl"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_sideleft_joint" type="fixed">
+		<origin xyz="0.02 0.165 0.1" rpy="0 0 0"/>
+		<parent link="top_plate"/>
+		<child link="side_plate_left"/>
+	</joint>
+	
+	
+		<!-- Side_right -->
+	<link name="side_plate_right">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="0 0 0"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="side_visual">
+			<origin xyz="0 0 0" rpy="1.57079 0 0"/>
+			<geometry name="pioneer_geom">
+				<mesh filename="package://pioneer_utils/gazebo/meshes/lateral.stl"/>
+			</geometry>
+			<material name="ChassisRed">
+				<color rgba="0.8 0.0 0.0 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="1.57079 0 0"/>
+			<geometry>
+				<mesh filename="package://pioneer_utils/gazebo/meshes/lateral.stl"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_sideright_joint" type="fixed">
+		<origin xyz="0.02 -0.162 0.1" rpy="0 0 0"/>
+		<parent link="top_plate"/>
+		<child link="side_plate_right"/>
 	</joint>
 
-	<!-- Hokuyo Laser -->
-	<link name="laser">
+
+	<!-- Top top-->
+	<link name="toptop_plate">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="0 0 0"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="toptop_visual">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry name="pioneer_geom">
+				<mesh filename="package://pioneer_utils/gazebo/meshes/toptop.stl"/>
+			</geometry>
+			<material name="TopBlack">
+					<color rgba="0.038 0.038 0.038 1.0"/>
+			</material>
+		</visual>
 		<collision>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0 0 0"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_toptop_joint" type="fixed">
+		<origin xyz="0.003 0 0.2" rpy="0 0 0"/>
+		<parent link="top_plate"/>
+		<child link="toptop_plate"/>
+	</joint>
+	
+
+	<!-- Sick Laser -->
+	<link name="laser">
+		<collision>
+			<origin xyz="0 0 -0.06" rpy="0 0 0"/>
 			<geometry>
 				<box size="0.1 0.1 0.16"/>
 			</geometry>
@@ -105,24 +206,25 @@
 		</inertial>
 	</link>
 	
+	<joint name="laser_joint" type="fixed">
+		<axis xyz="0 1 0" />
+		<origin xyz="-0.195 0 0.4" rpy="0 0 3.141592"/>
+		<parent link="base_link"/>
+		<child link="laser"/>
+	</joint>
+	
+	
+	<!-- Wheels, axes and hubs -->
 	<xacro:p3at_front suffix="left" reflect="1"/>
 	<xacro:p3at_front suffix="right" reflect="-1"/>
-	<xacro:p3at_back suffix="left" reflect="1"/>
-	<xacro:p3at_back suffix="right" reflect="-1"/>
 
-	<joint name="camera_joint" type="fixed">
-		<axis xyz="0 1 0" />
-		<origin xyz="-0.04 0 0.40" rpy="0 0 0"/>
-		<parent link="base_link"/>
-		<child link="camera_link"/>
-	</joint>
 
 	<!-- Camera -->
 	<link name="camera_link">
 		<collision>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 			<geometry>
-				<box size="0.07271 0.21 0.073"/>
+				<box size="0.06 0.21 0.070"/>
 			</geometry>
 		</collision>
 
@@ -139,8 +241,15 @@
 			<inertia ixx="0.003881243" ixy="0" ixz="0" iyy="0.000498940" iyz="0" izz="0.003879257" />
 		</inertial>
 	</link>
+	
+	<joint name="camera_joint" type="fixed">
+		<axis xyz="0 1 0" />
+		<origin xyz="0 0 0.10" rpy="0 0 0"/>
+		<parent link="top_plate"/>
+		<child link="camera_link"/>
+	</joint>
 
-<!-- from turtlebot!! -->
+<!-- camera config from turtlebot!! -->
 	<joint name="camera_rgb_joint" type="fixed">
 		<origin xyz="-0.087 -0.0125 0.2870" rpy="0 0 0"/>
 		<parent link="camera_link"/>

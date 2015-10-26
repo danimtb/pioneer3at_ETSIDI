@@ -1,0 +1,14 @@
+<launch>
+
+  <node name="recognizer" pkg="pocketsphinx" type="recognizer.py">
+    <param name="lm" value="$(find pioneer_utils)/voice_audio/dic/commands.lm"/>
+    <param name="dict" value="$(find pioneer_utils)/voice_audio/dic/commands.dic"/>
+  </node>
+
+  <node name="sound_play" pkg="sound_play" type="soundplay_node.py" output="screen">
+  </node>
+
+  <node name="voice_cmd_vel" pkg="pioneer_utils" type="voice_cmd_vel.py" output="screen">
+  </node>
+
+</launch>

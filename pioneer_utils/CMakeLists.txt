@@ -13,6 +13,3 @@ target_link_libraries(teleop_p3at ${catkin_LIBRARIES})
 
 add_executable(moving_alone src/moving_alone.cpp)
 target_link_libraries(moving_alone ${catkin_LIBRARIES})
-
-add_executable(nav-waypoints src/nav-waypoints.cpp)
-target_link_libraries(nav-waypoints ${catkin_LIBRARIES})

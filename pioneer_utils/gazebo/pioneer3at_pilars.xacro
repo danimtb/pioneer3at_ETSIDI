@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="pilars">
+
+	<!-- pilars -->
+	<xacro:macro name="longpilar_front" params="suffix reflect">
+		<link name="longpilar_front_${suffix}">
+			<inertial>
+				<mass value="1e-5" />
+				<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.004" length="0.2"/>
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.004" length="0.2"/>
+				</geometry>
+			</collision>
+		</link>
+		<gazebo reference="longpilar_front_${suffix}">
+			<material value="Gazebo/Grey"/>
+		</gazebo>
+
+		<joint name="longpilar_front_${suffix}_joint" type="fixed">
+			<origin xyz="0.12 ${reflect*0.155} 0.1" rpy="0 0 0"/>
+			<parent link="top_plate"/>
+			<child link="longpilar_front_${suffix}"/>
+		</joint>
+		
+		
+		<link name="longpilar_mid_${suffix}">
+			<inertial>
+				<mass value="1e-5" />
+				<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.004" length="0.2"/>
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.004" length="0.2"/>
+				</geometry>
+			</collision>
+		</link>
+		<gazebo reference="longpilar_mid_${suffix}">
+			<material value="Gazebo/Grey"/>
+		</gazebo>
+
+		<joint name="longpilar_mid_${suffix}_joint" type="fixed">
+			<origin xyz="0 ${reflect*0.155} 0.1" rpy="0 0 0"/>
+			<parent link="top_plate"/>
+			<child link="longpilar_mid_${suffix}"/>
+		</joint>
+		
+		
+		<link name="longpilar_back_${suffix}">
+			<inertial>
+				<mass value="1e-5" />
+				<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.004" length="0.2"/>
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<cylinder radius="0.004" length="0.2"/>
+				</geometry>
+			</collision>
+		</link>
+		<gazebo reference="longpilar_back_${suffix}">
+			<material value="Gazebo/Grey"/>
+		</gazebo>
+
+		<joint name="longpilar_back_${suffix}_joint" type="fixed">
+			<origin xyz="-0.135 ${reflect*0.025} 0.1" rpy="0 0 0"/>
+			<parent link="top_plate"/>
+			<child link="longpilar_back_${suffix}"/>
+		</joint>
+	</xacro:macro>
+</robot>

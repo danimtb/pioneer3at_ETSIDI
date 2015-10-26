@@ -1,0 +1,126 @@
+Language model created by QuickLM on Thu Jul 30 08:57:53 EDT 2015
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 23 sentences and 24 words
+
+\data\
+ngram 1=24
+ngram 2=45
+ngram 3=34
+
+\1-grams:
+-0.8424 </s> -0.3010
+-0.8424 <s> -0.2175
+-2.2041 BACK -0.2336
+-2.2041 BACKWARD -0.2336
+-2.2041 BUILD -0.2928
+-2.2041 CLOSE -0.2956
+-2.2041 FAST -0.2336
+-2.2041 FOLLOW -0.2983
+-1.9031 FOLLOWER -0.2336
+-2.2041 FORWARD -0.2336
+-2.2041 HALF -0.2336
+-1.7270 LEFT -0.2336
+-1.7270 MAP -0.2336
+-2.2041 ME -0.2336
+-2.2041 NAVIGATE -0.2336
+-2.2041 NAVIGATION -0.2336
+-2.2041 OPEN -0.2956
+-1.7270 RIGHT -0.2336
+-1.9031 ROTATE -0.2844
+-1.9031 RVIZ -0.2336
+-2.2041 SAVE -0.2928
+-2.2041 SLOW -0.2336
+-1.7270 STOP -0.2175
+-1.9031 TURN -0.2844
+
+\2-grams:
+-1.6628 <s> BACK 0.0000
+-1.6628 <s> BACKWARD 0.0000
+-1.6628 <s> BUILD 0.0000
+-1.6628 <s> CLOSE 0.0000
+-1.6628 <s> FAST 0.0000
+-1.6628 <s> FOLLOW 0.0000
+-1.6628 <s> FOLLOWER 0.0000
+-1.6628 <s> FORWARD 0.0000
+-1.6628 <s> HALF 0.0000
+-1.6628 <s> LEFT 0.0000
+-1.6628 <s> NAVIGATE 0.0000
+-1.6628 <s> NAVIGATION 0.0000
+-1.6628 <s> OPEN 0.0000
+-1.6628 <s> RIGHT 0.0000
+-1.3617 <s> ROTATE 0.0000
+-1.6628 <s> SAVE 0.0000
+-1.6628 <s> SLOW 0.0000
+-1.1856 <s> STOP 0.0000
+-1.3617 <s> TURN 0.0000
+-0.3010 BACK </s> -0.3010
+-0.3010 BACKWARD </s> -0.3010
+-0.3010 BUILD MAP 0.0000
+-0.3010 CLOSE RVIZ 0.0000
+-0.3010 FAST </s> -0.3010
+-0.3010 FOLLOW ME 0.0000
+-0.3010 FOLLOWER </s> -0.3010
+-0.3010 FORWARD </s> -0.3010
+-0.3010 HALF </s> -0.3010
+-0.3010 LEFT </s> -0.3010
+-0.3010 MAP </s> -0.3010
+-0.3010 ME </s> -0.3010
+-0.3010 NAVIGATE </s> -0.3010
+-0.3010 NAVIGATION </s> -0.3010
+-0.3010 OPEN RVIZ 0.0000
+-0.3010 RIGHT </s> -0.3010
+-0.6021 ROTATE LEFT 0.0000
+-0.6021 ROTATE RIGHT 0.0000
+-0.3010 RVIZ </s> -0.3010
+-0.3010 SAVE MAP 0.0000
+-0.3010 SLOW </s> -0.3010
+-0.7782 STOP </s> -0.3010
+-0.7782 STOP FOLLOWER 0.0000
+-0.7782 STOP MAP 0.0000
+-0.6021 TURN LEFT 0.0000
+-0.6021 TURN RIGHT 0.0000
+
+\3-grams:
+-0.3010 <s> BACK </s>
+-0.3010 <s> BACKWARD </s>
+-0.3010 <s> BUILD MAP
+-0.3010 <s> CLOSE RVIZ
+-0.3010 <s> FAST </s>
+-0.3010 <s> FOLLOW ME
+-0.3010 <s> FOLLOWER </s>
+-0.3010 <s> FORWARD </s>
+-0.3010 <s> HALF </s>
+-0.3010 <s> LEFT </s>
+-0.3010 <s> NAVIGATE </s>
+-0.3010 <s> NAVIGATION </s>
+-0.3010 <s> OPEN RVIZ
+-0.3010 <s> RIGHT </s>
+-0.6021 <s> ROTATE LEFT
+-0.6021 <s> ROTATE RIGHT
+-0.3010 <s> SAVE MAP
+-0.3010 <s> SLOW </s>
+-0.7782 <s> STOP </s>
+-0.7782 <s> STOP FOLLOWER
+-0.7782 <s> STOP MAP
+-0.6021 <s> TURN LEFT
+-0.6021 <s> TURN RIGHT
+-0.3010 BUILD MAP </s>
+-0.3010 CLOSE RVIZ </s>
+-0.3010 FOLLOW ME </s>
+-0.3010 OPEN RVIZ </s>
+-0.3010 ROTATE LEFT </s>
+-0.3010 ROTATE RIGHT </s>
+-0.3010 SAVE MAP </s>
+-0.3010 STOP FOLLOWER </s>
+-0.3010 STOP MAP </s>
+-0.3010 TURN LEFT </s>
+-0.3010 TURN RIGHT </s>
+
+\end\

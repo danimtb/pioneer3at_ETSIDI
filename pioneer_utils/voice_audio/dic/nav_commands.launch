@@ -1,0 +1,10 @@
+<launch>
+  <node name="recognizer" pkg="pocketsphinx" type="recognizer.py" output="screen">
+    <param name="lm" value="$(find pocketsphinx)/demo/nav_commands.lm"/>
+    <param name="dict" value="$(find pocketsphinx)/demo/nav_commands.dic"/>
+  </node>
+
+  <node name="sound_play" pkg="sound_play" type="soundplay_node.py"/>
+
+  <node name="voice_cmd_vel" pkg="pocketsphinx" type="voice_cmd_vel.py"/>
+</launch>

@@ -1,0 +1,23 @@
+<s> FORWARD </s>
+<s> BACKWARD </s>
+<s> BACK </s>
+<s> LEFT </s>
+<s> RIGHT </s>
+<s> TURN LEFT </s>
+<s> TURN RIGHT </s>
+<s> ROTATE LEFT </s>
+<s> ROTATE RIGHT </s>
+<s> FAST </s>
+<s> SLOW </s>
+<s> HALF </s>
+<s> STOP </s>
+<s> FOLLOWER </s>
+<s> FOLLOW ME </s>
+<s> STOP FOLLOWER </s>
+<s> BUILD MAP </s>
+<s> SAVE MAP </s>
+<s> STOP MAP </s>
+<s> OPEN RVIZ </s>
+<s> CLOSE RVIZ </s>
+<s> NAVIGATE </s>
+<s> NAVIGATION </s>

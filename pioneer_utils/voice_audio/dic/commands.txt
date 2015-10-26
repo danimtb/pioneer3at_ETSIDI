@@ -1,0 +1,23 @@
+forward
+backward
+back
+left
+right
+turn left
+turn right
+rotate left
+rotate right
+fast
+slow
+half
+stop
+follower
+follow me
+stop follower
+build map
+save map
+stop map
+open rviz
+close rviz
+navigate
+navigation

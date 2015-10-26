@@ -16,7 +16,7 @@
   <include file="$(find pioneer_utils)/sensors/kinect_to_laser.launch"/>
 
 <!-- Launch scan_filtered node -->
-  <include file="$(find pioneer_utils)/sensors/scan_filter/scan_filtered.launch"/>
+  <include file="$(find pioneer_utils)/sensors/laser_filter/scan_filtered.launch"/>
 
 <!-- Starting rosaria driver for motors and encoders -->
   <include file="$(find pioneer_utils)/sensors/rosaria.launch"/>
