@@ -1,0 +1,12 @@
+<launch>
+	<master auto="start"/>
+	
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find pioneer_utils)/navigation/common/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find pioneer_utils)/navigation/amcl/amcl_global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find pioneer_utils)/navigation/common/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find pioneer_utils)/navigation/common/recovery_behaviors.yaml" command="load" />
+    </node>
+</launch>

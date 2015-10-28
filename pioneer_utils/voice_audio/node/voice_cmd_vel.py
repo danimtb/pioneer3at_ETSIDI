@@ -47,6 +47,7 @@ class voice_cmd_vel:
         self.navigation = False
         self.msg = Twist()
 
+
         # Create the sound client object
         self.soundhandle = SoundClient()
        
@@ -60,7 +61,7 @@ class voice_cmd_vel:
         self.soundhandle.say("Say one of the navigation commands")
 
         # publish to cmd_vel, subscribe to speech output
-        self.pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=2)
+        self.pub_ = rospy.Publisher("cmd_vel", Twist, queue_size=2)
         rospy.Subscriber('recognizer/output', String, self.speechCb)
 
         r = rospy.Rate(10.0)

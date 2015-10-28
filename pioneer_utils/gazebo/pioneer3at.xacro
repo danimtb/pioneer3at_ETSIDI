@@ -112,7 +112,7 @@
 	</link>
 
 	<joint name="base_sideleft_joint" type="fixed">
-		<origin xyz="0.02 0.165 0.1" rpy="0 0 0"/>
+		<origin xyz="0.018 0.165 0.1" rpy="0 0 0"/>
 		<parent link="top_plate"/>
 		<child link="side_plate_left"/>
 	</joint>
@@ -145,7 +145,7 @@
 	</link>
 
 	<joint name="base_sideright_joint" type="fixed">
-		<origin xyz="0.02 -0.162 0.1" rpy="0 0 0"/>
+		<origin xyz="0.018 -0.162 0.1" rpy="0 0 0"/>
 		<parent link="top_plate"/>
 		<child link="side_plate_right"/>
 	</joint>
