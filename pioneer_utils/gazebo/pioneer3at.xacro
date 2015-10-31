@@ -112,7 +112,7 @@
 	</link>
 
 	<joint name="base_sideleft_joint" type="fixed">
-		<origin xyz="0.018 0.165 0.1" rpy="0 0 0"/>
+		<origin xyz="-0.02 0.165 0.1" rpy="0 0 0"/>
 		<parent link="top_plate"/>
 		<child link="side_plate_left"/>
 	</joint>
@@ -145,9 +145,169 @@
 	</link>
 
 	<joint name="base_sideright_joint" type="fixed">
-		<origin xyz="0.018 -0.162 0.1" rpy="0 0 0"/>
+		<origin xyz="-0.02 -0.162 0.1" rpy="0 0 0"/>
 		<parent link="top_plate"/>
 		<child link="side_plate_right"/>
+	</joint>
+
+		<!-- Side_back_down_right -->
+	<link name="side_plate_back_down_right">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="0 0 0"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="side_visual">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry name="pioneer_geom">
+				<box size="0.15 0.003 0.11"/>
+			</geometry>
+			<material name="ChassisRed">
+				<color rgba="0.8 0.0 0.0 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.15 0.003 0.11"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_sidebackdownright_joint" type="fixed">
+		<origin xyz="-0.205 -0.095 0.055" rpy="0 0 -1.1"/>
+		<parent link="top_plate"/>
+		<child link="side_plate_back_down_right"/>
+	</joint>
+
+		<!-- Side_back_up_right -->
+	<link name="side_plate_back_up_right">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="0 0 0"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="side_visual">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry name="pioneer_geom">
+				<box size="0.15 0.003 0.08"/>
+			</geometry>
+			<material name="ChassisRed">
+				<color rgba="0.8 0.0 0.0 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.15 0.003 0.08"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_sidebackupright_joint" type="fixed">
+		<origin xyz="-0.205 -0.095 0.16" rpy="0 0 -1.1"/>
+		<parent link="top_plate"/>
+		<child link="side_plate_back_up_right"/>
+	</joint>
+
+		<!-- Side_back_down_left -->
+	<link name="side_plate_back_down_left">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="0 0 0"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="side_visual">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry name="pioneer_geom">
+				<box size="0.15 0.003 0.11"/>
+			</geometry>
+			<material name="ChassisRed">
+				<color rgba="0.8 0.0 0.0 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.15 0.003 0.11"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_sidebackdownleft_joint" type="fixed">
+		<origin xyz="-0.205 0.095 0.055" rpy="0 0 1.1"/>
+		<parent link="top_plate"/>
+		<child link="side_plate_back_down_left"/>
+	</joint>
+
+		<!-- Side_back_up_left -->
+	<link name="side_plate_back_up_left">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="0 0 0"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="side_visual">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry name="pioneer_geom">
+				<box size="0.15 0.003 0.08"/>
+			</geometry>
+			<material name="ChassisRed">
+				<color rgba="0.8 0.0 0.0 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.15 0.003 0.08"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_sidebackupleft_joint" type="fixed">
+		<origin xyz="-0.205 0.095 0.16" rpy="0 0 1.1"/>
+		<parent link="top_plate"/>
+		<child link="side_plate_back_up_left"/>
+	</joint>
+
+		<!-- Side_back_up -->
+	<link name="side_plate_back_up">
+		<inertial>
+			<mass value="0.1"/>	
+			<origin xyz="0 0 0"/>
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"
+				 iyy="1.0" iyz="0.0"
+ 				izz="1.0"/>
+		</inertial>
+		<visual name="side_visual">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry name="pioneer_geom">
+				<box size="0.058 0.003 0.05"/>
+			</geometry>
+			<material name="ChassisRed">
+				<color rgba="0.8 0.0 0.0 1.0"/>
+			</material>
+		</visual>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.058 0.003 0.05"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="base_sidebackup_joint" type="fixed">
+		<origin xyz="-0.24 0. 0.175" rpy="0 0 1.57079"/>
+		<parent link="top_plate"/>
+		<child link="side_plate_back_up"/>
 	</joint>
 
 
@@ -194,7 +354,7 @@
 		</collision>
 
 		<visual>
-			<origin xyz="0 0 -0.06" rpy="3.141592 0 0"/>
+			<origin xyz="0 0 -0.05" rpy="3.141592 0 0"/>
 			<geometry>
 				<mesh filename="package://pioneer_utils/gazebo/meshes/sick_lms100.dae"/>
 			</geometry>
@@ -208,7 +368,7 @@
 	
 	<joint name="laser_joint" type="fixed">
 		<axis xyz="0 1 0" />
-		<origin xyz="-0.195 0 0.4" rpy="0 0 3.141592"/>
+		<origin xyz="-0.195 0 0.39" rpy="0 0 3.141592"/>
 		<parent link="base_link"/>
 		<child link="laser"/>
 	</joint>

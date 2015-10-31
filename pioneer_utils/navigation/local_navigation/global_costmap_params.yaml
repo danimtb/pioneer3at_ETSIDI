@@ -1,8 +1,8 @@
 global_costmap:
   global_frame: odom
   robot_base_frame: base_link
-  update_frequency: 10.0
-  publish_frequency: 10.0
+  update_frequency: 5.0
+  publish_frequency: 5.0
   static_map: false
   rolling_window: true
   width: 20.0
@@ -11,12 +11,18 @@ global_costmap:
   origin_x: 0.0
   origin_y: 0.0
 
-  observation_sources: sick_lms1xx kinect_laser kinect_laser_low kinect_laser_long
+plugins:
+    - {name: static_layer, type: "costmap_2d::StaticLayer"}
+    - {name: obstacle_layer_laser, type: "costmap_2d::ObstacleLayer"}
+    - {name: obstacle_layer_kinect, type: "costmap_2d::ObstacleLayer"}
+    - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
 
-  sick_lms1xx: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: true}
+obstacle_layer_kinect:
+    observation_sources: kinect_laser kinect_laser_low kinect_laser_long
+    kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth, marking: true, clearing: true, inf_is_valid: true}
+    kinect_laser_low: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_low, marking: true, clearing: false, inf_is_valid: true}
+    kinect_laser_long: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_long, marking: true, clearing: true}
 
-  kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth, marking: true, clearing: true, inf_is_valid: true}
-  
-  kinect_laser_low: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_low, marking: true, clearing: false, inf_is_valid: true}
-
-  kinect_laser_long: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_long, marking: true, clearing: false, inf_is_valid: true}
+obstacle_layer_laser:
+    observation_sources: sick_lms1xx_filtered
+    sick_lms1xx_filtered: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: true}
