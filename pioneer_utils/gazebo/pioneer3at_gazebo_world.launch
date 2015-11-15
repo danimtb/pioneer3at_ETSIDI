@@ -33,7 +33,4 @@
   <!-- Launch kinect and depthimage_to_laser node -->
   <include file="$(find pioneer_utils)/sensors/kinect_to_laser.launch"/>
 
-  <!-- Launch scan_filtered node -->
-  <include file="$(find pioneer_utils)/sensors/laser_filter/scan_filtered.launch"/>
-
 </launch>
