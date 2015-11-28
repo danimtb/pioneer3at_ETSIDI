@@ -21,7 +21,7 @@
 <!-- Starting rosaria driver for motors and encoders -->
   <include file="$(find pioneer_utils)/sensors/rosaria.launch"/>
 
-  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="-0.195 0 0.390 3.141592 0 0 base_link laser 1" />
-  <node pkg="tf" type="static_transform_publisher" name="base_to_camera_broadcaster" args="-0.020 0 0.360 0 0 0 base_link camera_link 1" />
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser_broadcaster" args="-0.2 0 0.390 3.141592 0 0 base_link laser 1" />
+  <node pkg="tf" type="static_transform_publisher" name="base_to_camera_broadcaster" args="0.020 0 0.375 0 0 0 base_link camera_link 1" />
 
 </launch>

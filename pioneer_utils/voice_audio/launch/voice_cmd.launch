@@ -7,6 +7,14 @@
 
   <node name="sound_play" pkg="sound_play" type="soundplay_node.py"/>
 
-  <node name="voice_cmd_vel" pkg="pioneer_utils" type="voice_cmd_vel.py" output="screen"/>
+  <node name="voice_cmd_vel" pkg="pioneer_utils" type="voice_cmd_vel.py" output="screen">
+    <param name="map_locations" value="$(find pioneer_utils)/main/locations.txt"/>
+    
+    <rosparam>
+       odometry_topic: odom
+       cmd_vel_topic: cmd_vel
+       rest_time: 5
+     </rosparam>
+  </node>
 
 </launch>

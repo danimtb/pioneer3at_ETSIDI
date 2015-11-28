@@ -19,5 +19,14 @@
 <s> STOP MAP </s>
 <s> OPEN RVIZ </s>
 <s> CLOSE RVIZ </s>
-<s> NAVIGATE </s>
+<s> NAVIGATE TO </s>
 <s> NAVIGATION </s>
+<s> UNKNOWN </s>
+<s> CORRIDOR </s>
+<s> HALL </s>
+<s> ROOM ONE </s>
+<s> TWO </s>
+<s> THREE </s>
+<s> HOME </s>
+<s> BIG </s>
+<s> SPACE </s>

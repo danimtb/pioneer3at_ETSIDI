@@ -19,5 +19,14 @@ save map
 stop map
 open rviz
 close rviz
-navigate
+navigate to
 navigation
+unknown
+corridor
+hall
+room one
+two
+three
+home
+big
+space

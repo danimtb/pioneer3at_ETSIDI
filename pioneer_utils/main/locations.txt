@@ -1,9 +1,9 @@
-hall 6.815 -8.151
-home -0.030 -0.005
-corridor 6.495 8.031
-room_1 -6.246 -10.364
-room_2 -2.256 -10.341
-room_3 1.344 -10.448
-big_room -2.235 7.109
-unknown_corridor -13.502 2.935
-unknown_space 18.740 1.509
+hall: 6.815 -8.151
+home: -0.030 -0.005
+corridor: 6.495 8.031
+room 1: -6.246 -10.364
+room 2: -2.256 -10.341
+room 3: 1.344 -10.448
+big room: -2.235 7.109
+unknown corridor: -13.502 2.935
+unknown space: 18.740 1.509

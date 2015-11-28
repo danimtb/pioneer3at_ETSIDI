@@ -20,8 +20,10 @@ from std_msgs.msg import String
 from sound_play.libsoundplay import SoundClient
 
 import actionlib
+import tf
 from actionlib_msgs.msg import *
 from geometry_msgs.msg import Pose, PoseWithCovarianceStamped, Point, Quaternion, Twist
+from nav_msgs.msg import Odometry
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from random import sample
 from math import pow, sqrt
@@ -40,33 +42,69 @@ def trunc(f, n):
 class voice_cmd_vel:
 
     def __init__(self):
+        rospy.loginfo("STAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARTTTTTTTTTTTTTTTTTTTTT")
         rospy.on_shutdown(self.cleanup)
         self.speed = 0.1
         self.buildmap = False
         self.follower = False
         self.navigation = False
         self.msg = Twist()
-
+        
+        # How long in seconds should the robot pause at each location?
+        self.rest_time = rospy.get_param("~rest_time", 10)
+        
+        # .txt file with name and x, y coordinates for location
+        self.map_locations = rospy.get_param("~map_locations")
+        
+        # odometry topic name
+        self.odometry_topic = rospy.get_param("~odometry_topic", "odom")
+        
+        # cmd_vel topic name
+        self.cmd_vel_topic = rospy.get_param("~cmd_vel_topic", "cmd_vel")
+        rospy.loginfo("CMD_VEL TOPIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICCCCCCCCCCCCCCCCCC")
+                       
+        self.locations = dict()
+        rospy.loginfo("BEFOOOOOREEEEEEEEEEEE READ FILEEEEEEEEEEEEEEEEEEEEEEEEE")
+        fh=open(self.map_locations)
+        for line in fh:
+            name = line.rstrip().split(":")
+            rospy.loginfo("NAMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+            temp = str(line.rstrip().rsplit(":", 1)[1])
+            coordinates = temp.split()
+            rospy.loginfo("COORDINAAAAAAAAAAAAAAAAAAAAAAAATEEEEEEEEEEEEEESSSSSSSSSSSS")
+            locations[str(name[0])] = Pose(Point(float(coordinates[0]), float(coordinates[1]), 0.000), Quaternion(*tf.transformations.quaternion_from_euler(0, 0, 0)))
+            rospy.loginfo("LOCATIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONNSSSSSSSSSSSSSSSSSSSSSS")
+        rospy.loginfo("REAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD FIIIIIIIIILEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
 
         # Create the sound client object
         self.soundhandle = SoundClient()
        
         rospy.sleep(1)
         self.soundhandle.stopAll()
+        
+         # Subscribe to the move_base action server
+        self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+        
+        rospy.loginfo("Waiting for move_base action server...")
+        
+        # Wait 60 seconds for the action server to become available
+        self.move_base.wait_for_server(rospy.Duration(60))
+        
+        rospy.loginfo("Connected to move base server")
        
         # Announce that we are ready for input
         rospy.sleep(1)
         self.soundhandle.say('Hi, my name is Petrois')
-        rospy.sleep(3)
+        rospy.sleep(2)
         self.soundhandle.say("Say one of the navigation commands")
 
         # publish to cmd_vel, subscribe to speech output
-        self.pub_ = rospy.Publisher("cmd_vel", Twist, queue_size=2)
+        self.pub = rospy.Publisher(self.cmd_vel_topic, Twist, queue_size=2)
         rospy.Subscriber('recognizer/output', String, self.speechCb)
 
         r = rospy.Rate(10.0)
         while not rospy.is_shutdown():
-            self.pub_.publish(self.msg)
+            self.pub.publish(self.msg)
             r.sleep()
         
     def speechCb(self, msg):
@@ -225,7 +263,6 @@ class voice_cmd_vel:
             else:
                 self.soundhandle.say('Already in navigation mode')
 
-
         elif msg.data.find("stop navigation") > -1:
             if self.navigation == True:
                 self.msg = Twist()
@@ -241,13 +278,46 @@ class voice_cmd_vel:
                 self.soundhandle.say('Navigation stopped')
             else:
                 self.soundhandle.say('I am not in navigation mode')
+                
+        #elif msg.data.find("navigate to") > -1:
+         #   if msg.data.split()[2] in location.keys():
+          #      self.send_goal(msg.data.split()[2])
+
+        self.pub.publish(self.msg)
         
-        self.pub_.publish(self.msg)
+    def send_goal(self, location_name):
+        location = self.locations.get(location_name)
+        # Set up goal location
+        #self.goal = MoveBaseGoal()
+        #self.goal.target_pose.pose = location
+        #self.goal.target_pose.header.frame_id = 'map'
+        #self.goal.target_pose.header.stamp = rospy.Time.now()
+        #rospy.loginfo(self.goal)
+            
+        # Let the user know where the robot is going next
+        #rospy.loginfo("Going to: " + str(location_name))
+            
+        # Start the robot toward the next location
+        #self.move_base.send_goal(self.goal)
+            
+        # Allow 5 minutes to get there
+        #finished_within_time = self.move_base.wait_for_result(rospy.Duration(300)) 
+            
+        # Check for success or failure
+        #if not finished_within_time:
+         #   self.move_base.cancel_goal()
+          #  rospy.loginfo("Timed out achieving goal")
+        #else:
+         #   state = self.move_base.get_state()
+          #  if state == GoalStatus.SUCCEEDED:
+           #     rospy.loginfo("Goal succeeded!")
+            #else:
+             #   rospy.loginfo("Goal failed")
 
     def cleanup(self):
         # stop the robot!
         twist = Twist()
-        self.pub_.publish(twist)
+        #self.pub.publish(twist)
 
 if __name__=="__main__":
     rospy.init_node('voice_cmd_vel')

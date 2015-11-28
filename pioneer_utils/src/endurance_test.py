@@ -74,8 +74,10 @@ class NavTest():
 
         fh=open(self.map_locations)
         for line in fh:
-            line=line.rstrip().split()
-            locations[line[0]] = Pose(Point(float(line[1]), float(line[2]), 0.000), Quaternion(*tf.transformations.quaternion_from_euler(0, 0, 0)))
+            name = line.rstrip().split(":")
+            temp = str(line.rstrip().rsplit(":", 1)[1])
+            coordinates = temp.split()
+            locations[name[0]] = Pose(Point(float(coordinates[0]), float(coordinates[1]), 0.000), Quaternion(*tf.transformations.quaternion_from_euler(0, 0, 0)))
         
         # Publisher to manually control the robot (e.g. to stop it)
         self.cmd_vel_pub = rospy.Publisher(self.cmd_vel_topic, Twist)

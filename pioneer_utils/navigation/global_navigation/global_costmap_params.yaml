@@ -1,24 +1,28 @@
 global_costmap:
-  global_frame: /map
+  global_frame: map
   robot_base_frame: base_link
-  update_frequency: 5.0
-  publish_frequency: 5.0
+  update_frequency: 2.0
+  publish_frequency: 2.0
   static_map: true
   rolling_window: false
-  track_unknown_space: true
+  track_unknown_space: false
 
 plugins:
     - {name: static_layer, type: "costmap_2d::StaticLayer"}
-    - {name: obstacle_layer_laser, type: "costmap_2d::ObstacleLayer"}
-    - {name: obstacle_layer_kinect, type: "costmap_2d::ObstacleLayer"}
+    - {name: obstacle_layer_laser, type: "costmap_2d::VoxelLayer"}
+    - {name: obstacle_layer_kinect, type: "costmap_2d::VoxelLayer"}
     - {name: inflation_layer, type: "costmap_2d::InflationLayer"}
 
 obstacle_layer_kinect:
-    observation_sources: kinect_laser kinect_laser_low kinect_laser_long
-    kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth, marking: true, clearing: true, inf_is_valid: true}
-    kinect_laser_low: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_low, marking: true, clearing: false, inf_is_valid: true}
-    kinect_laser_long: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_long, marking: true, clearing: true}
+    observation_sources: kinect_laser kinect_laser_low kinect_laser_long sick_lms1xx_filtered
+    kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth, marking: true, clearing: true, inf_is_valid: false}
+    kinect_laser_low: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_low, marking: true, clearing: true, inf_is_valid: false}
+    kinect_laser_long: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_long, marking: true, clearing: true, nf_is_valid: false}
+    sick_lms1xx_filtered: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: false, clearing: true, inf_is_valid: false}
 
 obstacle_layer_laser:
     observation_sources: sick_lms1xx_filtered
-    sick_lms1xx_filtered: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: true}
+    sick_lms1xx_filtered: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: false}
+
+inflation_layer:
+    inflation_radius: 0.15
