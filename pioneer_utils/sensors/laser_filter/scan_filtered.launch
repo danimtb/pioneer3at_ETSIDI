@@ -1,5 +1,0 @@
-<launch>
-  <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
-    <rosparam command="load" file="$(find pioneer_utils)/sensors/laser_filter/LaserScanRangeFilter.yaml" />
-  </node>
-</launch>

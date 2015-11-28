@@ -1,11 +1,11 @@
 global_costmap:
-  global_frame: map
-  robot_base_frame: base_link
-  update_frequency: 2.0
-  publish_frequency: 2.0
-  static_map: true
-  rolling_window: false
-  track_unknown_space: false
+    global_frame: /map
+    robot_base_frame: base_link
+    update_frequency: 5.0
+    publish_frequency: 5.0
+    static_map: true
+    rolling_window: false
+    track_unknown_space: true
 
 plugins:
     - {name: static_layer, type: "costmap_2d::StaticLayer"}
@@ -21,8 +21,5 @@ obstacle_layer_kinect:
     sick_lms1xx_filtered: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: false, clearing: true, inf_is_valid: false}
 
 obstacle_layer_laser:
-    observation_sources: sick_lms1xx_filtered
-    sick_lms1xx_filtered: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: false}
-
-inflation_layer:
-    inflation_radius: 0.15
+    observation_sources: sick_lms1xx
+    sick_lms1xx: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: true}

@@ -1,21 +1,20 @@
 <launch>
-	<!-- Run the map server -->
-	<node name="map_server" pkg="map_server" type="map_server" args="$(find pioneer_utils)/maps/gazebo-willowgarage.yaml"/>
+    <!-- Run the map server -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find pioneer_utils)/maps/gazebo-willowgarage.yaml"/>
 
-	<!--- Run AMCL -->
-	<include file="$(find pioneer_utils)/navigation/common/amcl.launch"/>
-	
-	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-		<rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="global_costmap" />
-		<rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="local_costmap" />
-		<rosparam file="$(find pioneer_utils)/navigation/common/local_costmap_params.yaml" command="load" ns="local_costmap"/>
-		<rosparam file="$(find pioneer_utils)/navigation/global_navigation/global_costmap_params.yaml" command="load" ns="global_costmap" />
-		<rosparam file="$(find pioneer_utils)/navigation/common/base_local_planner_params.yaml" command="load" />
+    <!--- Run AMCL -->
+    <include file="$(find pioneer_utils)/navigation/common/amcl.launch"/>
+
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+        <rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="global_costmap/costmap" />
+        <rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="local_costmap/costmap" />
+        <rosparam file="$(find pioneer_utils)/navigation/common/local_costmap_params.yaml" command="load" ns="local_costmap/costmap"/>
+        <rosparam file="$(find pioneer_utils)/navigation/global_navigation/global_costmap_params.yaml" command="load" ns="global_costmap/costmap" />
+        <rosparam file="$(find pioneer_utils)/navigation/common/base_local_planner_params.yaml" command="load" />
         <rosparam file="$(find pioneer_utils)/navigation/common/global_planner_params.yaml" command="load" />
         <rosparam file="$(find pioneer_utils)/navigation/common/recovery_behaviors.yaml" command="load" />
         <rosparam>
-            planner_frequency: 1.0 
+            planner_frequency: 1.0
         </rosparam>
-
-	</node>
+    </node>
 </launch>

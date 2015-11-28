@@ -1,9 +1,9 @@
 <launch>
-	<!-- Run the map server -->
-	<node name="map_server" pkg="map_server" type="map_server" args="$(find pioneer_utils)/maps/clearmap.yaml"/>
+    <!-- Run the map server -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find pioneer_utils)/maps/floor_zero-map.yaml"/>
 
-	<!--- Run AMCL -->
-	<include file="$(find pioneer_utils)/navigation/common/amcl.launch"/>
+    <!--- Run AMCL -->
+    <include file="$(find pioneer_utils)/navigation/common/amcl.launch"/>
 	
 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
         <rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="global_costmap" />
