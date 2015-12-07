@@ -21,6 +21,3 @@ global_costmap:
   obstacle_layer_laser:
     observation_sources: sick_lms1xx
     sick_lms1xx: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: true}
-
-  inflation_layer:
-    inflation_radius: 0.25
