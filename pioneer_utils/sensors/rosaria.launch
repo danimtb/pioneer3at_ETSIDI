@@ -6,6 +6,10 @@
       TicksMM: 166
       RevCount: 37350
       DriftFactor: 0
+      trans_accel: 0
+      trans_decel: 0
+      rot_accel: 0
+      rot_decel: 0
   </rosparam>
   <remap from="~cmd_vel" to="cmd_vel"/>
   </node>

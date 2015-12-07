@@ -9,7 +9,7 @@
         <remap from="scan" to="camera/scan_depth_low"/>
 
         <rosparam>
-            scan_height: 150
+            scan_height: 200
             scan_time: 0.167
             range_min: 0.45
             range_max: 1.4

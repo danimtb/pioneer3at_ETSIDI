@@ -1,8 +1,8 @@
 global_costmap:
   global_frame: /map
   robot_base_frame: /base_link
-  update_frequency: 10.0
-  publish_frequency: 10.0
+  update_frequency: 5.0
+  publish_frequency: 5.0
   static_map: true
   rolling_window: false
   track_unknown_space: true
@@ -23,4 +23,4 @@ global_costmap:
     sick_lms1xx: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: true}
 
   inflation_layer:
-    inflation_radius: 0.2
+    inflation_radius: 0.25
