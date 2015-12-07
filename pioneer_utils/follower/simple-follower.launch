@@ -5,13 +5,13 @@
       <remap from="turtlebot_follower/cmd_vel" to="/cmd_vel"/>
       <remap from="depth/points" to="camera/depth/points"/>
       <param name="enabled" value="true" />
-      <param name="x_scale" value="10.0" />
-      <param name="z_scale" value="10.0" />
+      <param name="x_scale" value="4.0" />
+      <param name="z_scale" value="5.0" />
       <param name="min_x" value="-0.35" />
       <param name="max_x" value="0.35" />
-      <param name="min_y" value="0.1" />
+      <param name="min_y" value="0.2" />
       <param name="max_y" value="0.5" />
       <param name="max_z" value="1.2" />
-      <param name="goal_z" value="0.6" />
+      <param name="goal_z" value="0.65" />
     </node>
 </launch>
