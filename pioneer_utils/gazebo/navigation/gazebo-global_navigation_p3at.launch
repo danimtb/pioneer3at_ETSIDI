@@ -16,5 +16,6 @@
         <rosparam>
             planner_frequency: 1.0
         </rosparam>
+        <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
     </node>
 </launch>
