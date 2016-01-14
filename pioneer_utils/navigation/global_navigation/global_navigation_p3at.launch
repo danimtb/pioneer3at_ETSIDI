@@ -6,7 +6,6 @@
     <include file="$(find pioneer_utils)/navigation/common/amcl.launch"/>
 	
 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-        <param name="base_global_planner" value="gobal_planner/GlobalPlanner"/>
         <rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="global_costmap" />
         <rosparam file="$(find pioneer_utils)/navigation/common/costmap_common_params_p3at.yaml" command="load" ns="local_costmap" />
         <rosparam file="$(find pioneer_utils)/navigation/common/local_costmap_params.yaml" command="load" />
@@ -17,5 +16,6 @@
         <rosparam>
             planner_frequency: 1.0 
         </rosparam>
+        <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
     </node>
 </launch>

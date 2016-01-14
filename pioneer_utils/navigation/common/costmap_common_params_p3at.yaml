@@ -1,5 +1,1 @@
-obstacle_range: 5.0
-raytrace_range: 25.0
-inflation_radius: 0.35
-max_obstacle_height: 50.0
 footprint: [ [0.254, -0.230], [-0.254, -0.230], [-0.254, 0.230], [0.254, 0.230] ]
