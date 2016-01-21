@@ -1,19 +1,12 @@
-<?xml version="1.0"?>
-
 <launch>
-
-    <!-- run depthimage_to_laserscan node -->
     <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
         <remap from="image" to="/camera/depth/image_raw"/>
         <remap from="camera_info" to="/camera/depth/camera_info"/>
         <remap from="scan" to="camera/scan_depth"/>
 
         <rosparam>
-            scan_height: 120
+            scan_height: 100
             scan_time: 0.167
-            range_max: 3.5
         </rosparam>
-
     </node>
-
 </launch>
