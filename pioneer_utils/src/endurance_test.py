@@ -54,6 +54,7 @@ class NavTest():
         
         # odometry topic name
         self.odometry_topic = rospy.get_param("~odometry_topic", "odom")
+        print self.odometry_topic
         
         # cmd_vel topic name
         self.cmd_vel_topic = rospy.get_param("~cmd_vel_topic", "cmd_vel")
@@ -80,7 +81,7 @@ class NavTest():
             locations[name[0]] = Pose(Point(float(coordinates[0]), float(coordinates[1]), 0.000), Quaternion(*tf.transformations.quaternion_from_euler(0, 0, 0)))
         
         # Publisher to manually control the robot (e.g. to stop it)
-        self.cmd_vel_pub = rospy.Publisher(self.cmd_vel_topic, Twist)
+        self.cmd_vel_pub = rospy.Publisher(self.cmd_vel_topic, Twist, queue_size=2)
         
         # Subscribe to the move_base action server
         self.move_base = actionlib.SimpleActionClient("move_base", MoveBaseAction)
@@ -144,6 +145,8 @@ class NavTest():
             
             # Let the user know where the robot is going next
             rospy.loginfo("Going to: " + str(location))
+
+            print self.last_pose
             
             # Start the robot toward the next location
             self.move_base.send_goal(self.goal)
@@ -187,7 +190,6 @@ class NavTest():
     	# Keep track of the distance traveled.
         self.distance += sqrt(pow(now_pose.pose.pose.position.x - self.last_pose.pose.pose.position.x, 2) + pow(now_pose.pose.pose.position.y - self.last_pose.pose.pose.position.y, 2))
         self.last_pose = now_pose
-        
       
 def trunc(f, n):
     # Truncates/pads a float f to n decimal places without rounding

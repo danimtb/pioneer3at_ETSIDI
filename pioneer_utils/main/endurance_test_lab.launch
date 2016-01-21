@@ -1,0 +1,13 @@
+<launch>
+
+  <node name="endurance_test" pkg="pioneer_utils" type="endurance_test.py" output="screen">
+    <param name="map_locations" value="$(find pioneer_utils)/main/locations_lab.txt"/>
+    
+    <rosparam>
+       odometry_topic: odom
+       cmd_vel_topic: cmd_vel
+       rest_time: 5
+     </rosparam>
+  </node>
+
+</launch>
