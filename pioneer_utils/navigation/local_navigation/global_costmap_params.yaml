@@ -1,31 +1,30 @@
 global_costmap:
-  global_frame: /map
+  global_frame: /odom
   robot_base_frame: /base_link
-  update_frequency: 1.0
-  publish_frequency: 1.0
+  update_frequency: 2.0
+  publish_frequency: 2.0
   static_map: false
   rolling_window: true
   track_unknown_space: true
-  width: 20.0
-  height: 20.0
+  width: 15.0
+  height: 15.0
   origin_x: 0.0
   origin_y: 0.0
 
   plugins:
-      - {name: static_layer,       type: "costmap_2d::StaticLayer"}
       - {name: obstacle_layer_kinect,        type: "costmap_2d::VoxelLayer"}
       - {name: obstacle_layer_laser,       type: "costmap_2d::VoxelLayer"}
       - {name: inflation_layer,       type: "costmap_2d::InflationLayer"}
 
   obstacle_layer_kinect:
     observation_sources: kinect_laser kinect_laser_low kinect_laser_long
-    kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth, marking: true, clearing: true, inf_is_valid: false}
-    kinect_laser_low: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_low, marking: true, clearing: true, inf_is_valid: false}
-    kinect_laser_long: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_long, marking: true, clearing: true, inf_is_valid: false}
+    kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth, marking: true, clearing: true, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: true}
+    kinect_laser_low: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_low, marking: true, clearing: true, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: true}
+    kinect_laser_long: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_long, marking: true, clearing: true, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: true}
 
   obstacle_layer_laser:
     observation_sources: sick_lms1xx
-    sick_lms1xx: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, inf_is_valid: true}
+    sick_lms1xx: {sensor_frame: laser, data_type: LaserScan, topic: scan, marking: true, clearing: true, obstacle_range: 5.0, raytrace_range: 12.5, inf_is_valid: true}
 
   inflation_layer:
     inflation_radius: 0.2
