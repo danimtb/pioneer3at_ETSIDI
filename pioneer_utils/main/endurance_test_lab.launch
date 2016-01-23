@@ -4,9 +4,9 @@
     <param name="map_locations" value="$(find pioneer_utils)/main/locations_lab.txt"/>
     
     <rosparam>
-       odometry_topic: odom
+       odometry_topic: rosaria/pose
        cmd_vel_topic: cmd_vel
-       rest_time: 5
+       rest_time: 1
      </rosparam>
   </node>
 
