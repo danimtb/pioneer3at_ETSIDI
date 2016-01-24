@@ -34,15 +34,9 @@ def kill(proc_pid):
         proc.terminate()
     process.terminate()
 
-def trunc(f, n):
-    # Truncates/pads a float f to n decimal places without rounding
-    slen = len('%.*f' % (n, f))
-    return float(str(f)[:slen])
-
 class voice_cmd_vel:
 
     def __init__(self):
-        rospy.loginfo("STAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARTTTTTTTTTTTTTTTTTTTTT")
         rospy.on_shutdown(self.cleanup)
         self.speed = 0.1
         self.buildmap = False
@@ -52,29 +46,20 @@ class voice_cmd_vel:
         
         # How long in seconds should the robot pause at each location?
         self.rest_time = rospy.get_param("~rest_time", 10)
-        
         # .txt file with name and x, y coordinates for location
         self.map_locations = rospy.get_param("~map_locations")
-        
         # odometry topic name
         self.odometry_topic = rospy.get_param("~odometry_topic", "odom")
-        
         # cmd_vel topic name
         self.cmd_vel_topic = rospy.get_param("~cmd_vel_topic", "cmd_vel")
-        rospy.loginfo("CMD_VEL TOPIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICCCCCCCCCCCCCCCCCC")
                        
         self.locations = dict()
-        rospy.loginfo("BEFOOOOOREEEEEEEEEEEE READ FILEEEEEEEEEEEEEEEEEEEEEEEEE")
         fh=open(self.map_locations)
         for line in fh:
             name = line.rstrip().split(":")
-            rospy.loginfo("NAMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
             temp = str(line.rstrip().rsplit(":", 1)[1])
             coordinates = temp.split()
-            rospy.loginfo("COORDINAAAAAAAAAAAAAAAAAAAAAAAATEEEEEEEEEEEEEESSSSSSSSSSSS")
-            locations[str(name[0])] = Pose(Point(float(coordinates[0]), float(coordinates[1]), 0.000), Quaternion(*tf.transformations.quaternion_from_euler(0, 0, 0)))
-            rospy.loginfo("LOCATIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOONNSSSSSSSSSSSSSSSSSSSSSS")
-        rospy.loginfo("REAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD FIIIIIIIIILEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+            self.locations[name[0]] = Pose(Point(float(coordinates[0]), float(coordinates[1]), 0.000), Quaternion(*tf.transformations.quaternion_from_euler(0, 0, 0)))
 
         # Create the sound client object
         self.soundhandle = SoundClient()
@@ -113,145 +98,57 @@ class voice_cmd_vel:
         if msg.data.find("fast") > -1:
             if self.speed != 0.3:
                 self.soundhandle.say('Speeding up')
-                if self.msg.linear.x > 0:
-                    self.msg.linear.x = 0.3
-                elif self.msg.linear.x < 0:
-                    self.msg.linear.x = -0.3
-                if self.msg.angular.z >0:
-                    self.msg.angular.z = 0.3
-                elif self.msg.angular.z < 0:
-                    self.msg.angular.z = -0.3
-                self.speed = 0.3
+                self.set_speed(0.3)
             else:
                 self.soundhandle.say('Already at full speed')
 
         if msg.data.find("half") > -1:
             if self.speed != 0.2:
                 self.soundhandle.say('Going at half speed')
-                if self.msg.linear.x > 0:
-                    self.msg.linear.x = 0.2
-                elif self.msg.linear.x < 0:
-                    self.msg.linear.x = -0.2
-                if self.msg.angular.z >0:
-                    self.msg.angular.z = 0.2
-                elif self.msg.angular.z < 0:
-                    self.msg.angular.z = -0.2
-                self.speed = 0.2
+                self.set_speed(0.2)
             else:
                 self.soundhandle.say('Already at half speed')
 
         if msg.data.find("slow") > -1:
             if self.speed != 0.1:
                 self.soundhandle.say('Slowing down')
-                if self.msg.linear.x > 0:
-                    self.msg.linear.x = 0.1
-                elif self.msg.linear.x < 0:
-                    self.msg.linear.x = -0.1
-                if self.msg.angular.z >0:
-                    self.msg.angular.z = 0.1
-                elif self.msg.angular.z < 0:
-                    self.msg.angular.z = -0.1
-                self.speed = 0.1
+                self.set_speed(0.1)
             else:
                 self.soundhandle.say('Already at slow speed')
 
         if msg.data.find("forward") > -1:
-            self.soundhandle.play(1)    
-            self.msg.linear.x = self.speed
-            self.msg.angular.z = 0
-        elif msg.data.find("left") > -1:
-            self.soundhandle.play(1)
-            if self.msg.linear.x != 0:
-                if self.msg.angular.z < self.speed:
-                    self.msg.angular.z += 0.05
-            else:        
-                self.msg.angular.z = self.speed*2
+            self.forward()
         elif msg.data.find("right") > -1:
-            self.soundhandle.play(1)    
-            if self.msg.linear.x != 0:
-                if self.msg.angular.z > -self.speed:
-                    self.msg.angular.z -= 0.05
-            else:        
-                self.msg.angular.z = -self.speed*2
+            self.right()
+        elif msg.data.find("left") > -1:
+            self.left()
         elif msg.data.find("back") > -1:
-            self.soundhandle.play(1)
-            self.msg.linear.x = -self.speed
-            self.msg.angular.z = 0
+            self.backward()
         elif msg.data.find("stop") > -1 or msg.data.find("halt") > -1:
-            self.soundhandle.play(1)
-            self.msg = Twist()
+            self.stop()
 
 ################################# follower commands
         
         if msg.data.find("follow me") > -1:
-            if self.follower == False:
-                self.msg = Twist()
-                self.proc1 = subprocess.Popen(['roslaunch', 'pioneer_utils', 'simple-follower.launch'])
-                self.soundhandle.say('Okay. Show me the way')
-                self.follower = True
-            else:
-                self.soundhandle.say('Already in follower mode')
-		
+            self.run_follower(True)
         elif msg.data.find("stop follower") > -1:
-            if self.follower == True:
-                self.msg = Twist()
-                print 'proc1 = ', self.proc1.pid
-                self.proc1.terminate()
-                kill(self.proc1.pid)
-                self.proc1.kill()
-                self.follower = False
-                self.soundhandle.say('Follower mode disabled')
-            else:
-                self.soundhandle.say('Hey, I wasnt following you')
+           self.run_follower(False)
+
 
 ################################ map commands
 
         if msg.data.find("build map") > -1:
-            if self.buildmap == False:
-                self.soundhandle.say('Building map with slam gmapping')
-                rospy.sleep(2)
-                self.soundhandle.say('Visualizing map')
-                self.msg = Twist()
-                self.proc2 = subprocess.Popen(['roslaunch', 'p2os_launch', 'gmapping.launch'])
-                self.proc3 = subprocess.Popen(['roslaunch', 'pioneer_utils', 'rviz-gmapping.launch'])
-                self.buildmap = True
-            else:
-                self.soundhandle.say('Already building a map')
-
+           self.build_map(True)
 
         elif msg.data.find("save map") > -1:
-            if self.buildmap == True:
-                self.msg = Twist()
-                self.proc4 = subprocess.Popen(['rosrun', 'map_server', 'map_saver', '-f', 'new_map'])
-                rospy.sleep(6)
-                print 'map saved at ~/.ros directory as new_map.pgm new_map.yaml'
-                self.soundhandle.say('Map saved successfully')
-            else:
-                self.soundhandle.say('I am not building any map so there is no map to save')
+            self.save_map()
 		
         elif msg.data.find("stop map") > -1:
-            if self.buildmap == True:
-               self.msg = Twist() 
-               print 'proc2 = ', self.proc2.pid
-               self.proc2.terminate()
-               kill(self.proc2.pid)
-               self.proc2.kill()
-               print 'proc3 = ', self.proc3.pid
-               self.proc3.terminate()
-               kill(self.proc3.pid)
-               self.proc3.kill()
-               print 'proc4 = ', self.proc4.pid
-               self.proc4.terminate()
-               kill(self.proc4.pid)
-               self.proc4.kill()
-               self.buildmap = False
-               self.soundhandle.say('Building map stopped')
-            else:
-               self.soundhandle.say('I am not building any map')
+            self.build_map(False)
 
 ################################ navigation commands
 
-        if msg.data.find("navigate") > -1:
+        if msg.data.find("kk") > -1: #OJOOOOOOOOOOOOOOOOOOO cambiar
             if self.navigation == False:
                 self.soundhandle.say('Starting navigation stack')
                 rospy.sleep(2)
@@ -263,7 +160,7 @@ class voice_cmd_vel:
             else:
                 self.soundhandle.say('Already in navigation mode')
 
-        elif msg.data.find("stop navigation") > -1:
+        elif msg.data.find("kk") > -1: #OJOOOOOOOOOOOOO cambiar
             if self.navigation == True:
                 self.msg = Twist()
                 print 'proc5 = ', self.proc5.pid
@@ -279,45 +176,114 @@ class voice_cmd_vel:
             else:
                 self.soundhandle.say('I am not in navigation mode')
                 
-        #elif msg.data.find("navigate to") > -1:
-         #   if msg.data.split()[2] in location.keys():
-          #      self.send_goal(msg.data.split()[2])
+        elif msg.data.find("navigate to") > -1:
+            if len(msg.data.split()) > 2:
+                if msg.data.rsplit("navigate to ", 1)[1] in self.locations.keys():
+                    self.send_goal(msg.data.rsplit("navigate to ", 1)[1])
 
         self.pub.publish(self.msg)
         
     def send_goal(self, location_name):
         location = self.locations.get(location_name)
         # Set up goal location
-        #self.goal = MoveBaseGoal()
-        #self.goal.target_pose.pose = location
-        #self.goal.target_pose.header.frame_id = 'map'
-        #self.goal.target_pose.header.stamp = rospy.Time.now()
-        #rospy.loginfo(self.goal)
+        self.goal = MoveBaseGoal()
+        self.goal.target_pose.pose = location
+        self.goal.target_pose.header.frame_id = 'map'
+        self.goal.target_pose.header.stamp = rospy.Time.now()
+        rospy.loginfo(self.goal)
             
         # Let the user know where the robot is going next
-        #rospy.loginfo("Going to: " + str(location_name))
+        rospy.loginfo("Going to: " + str(location_name))
+        self.soundhandle.say("Going to " + str(location_name))
             
         # Start the robot toward the next location
-        #self.move_base.send_goal(self.goal)
-            
-        # Allow 5 minutes to get there
-        #finished_within_time = self.move_base.wait_for_result(rospy.Duration(300)) 
-            
-        # Check for success or failure
-        #if not finished_within_time:
-         #   self.move_base.cancel_goal()
-          #  rospy.loginfo("Timed out achieving goal")
-        #else:
-         #   state = self.move_base.get_state()
-          #  if state == GoalStatus.SUCCEEDED:
-           #     rospy.loginfo("Goal succeeded!")
-            #else:
-             #   rospy.loginfo("Goal failed")
+        self.move_base.send_goal(self.goal)
+
+    def run_follower(self, on):
+        if on and self.follower == False:
+            self.msg = Twist()
+            subprocess.Popen(['roslaunch', 'pioneer_utils', 'simple-follower.launch'])
+            self.soundhandle.say('Okay. Show me the way')
+            self.follower = True
+        elif on and self.follower:
+            self.soundhandle.say('Already in follower mode')
+        elif on == False and self.follower:
+            self.msg = Twist()
+            subprocess.Popen(['rosnode', 'kill', 'turtlebot_follower'])
+            self.follower = False
+            self.soundhandle.say('Follower mode disabled')
+
+    def forward(self):
+        self.soundhandle.play(1)    
+        self.msg.linear.x = self.speed
+        self.msg.angular.z = 0
+
+    def backward(self):
+        self.soundhandle.play(1)
+        self.msg.linear.x = -self.speed
+        self.msg.angular.z = 0
+   
+    def left(self):
+        self.soundhandle.play(1)
+        self.msg.linear.x = 0
+        self.msg.angular.z = self.speed*2
+        
+    def right(self):
+        self.soundhandle.play(1)    
+        self.msg.linear.x = 0
+        self.msg.angular.z = -self.speed*2
+
+    def stop(self):
+        self.move_base.cancel_goal()
+        self.run_follower(False)
+        self.msg = Twist()
+        self.soundhandle.play(1)
+
+    def set_speed(self, vel):
+        if self.msg.linear.x > 0:
+            self.msg.linear.x = vel
+        elif self.msg.linear.x < 0:
+            self.msg.linear.x = -vel
+        if self.msg.angular.z >0:
+            self.msg.angular.z = vel
+        elif self.msg.angular.z < 0:
+            self.msg.angular.z = -vel
+            self.speed = vel
+
+    def build_map(self, on):
+        if on and self.buildmap == False:
+            self.stop()
+            self.soundhandle.say('Building map with slam gmapping')
+            subprocess.Popen(['rosnode', 'kill', 'amcl'])
+            subprocess.Popen(['rosnode', 'kill', 'map_server'])
+            subprocess.Popen(['roslaunch', 'p2os_launch', 'gmapping.launch'])
+            self.buildmap = True
+        elif on and self.buildmap:
+            self.soundhandle.say('Already building a map')
+        elif on == False and self.buildmap:
+            self.stop()
+            subprocess.Popen(['rosnode', 'kill', 'slam_gmapping'])
+            self.buildmap = False
+            subprocess.Popen(['roslaunch', 'pioneer_utils', 'floor_zero-map.launch'])
+            subprocess.Popen(['roslaunch', 'p2os_launch', 'amcl.launch'])
+            self.soundhandle.say('Building map stopped')
+        else:
+            self.soundhandle.say('I am not building any map')
+
+    def save_map(self):
+        if self.buildmap == True:
+            self.msg = Twist()
+            subprocess.Popen(['rosrun', 'map_server', 'map_saver', '-f', 'new_map'])
+            rospy.sleep(4)
+            print 'map saved at ~/.ros directory as new_map.pgm new_map.yaml'
+            self.soundhandle.say('Map saved successfully')
+        else:
+            self.soundhandle.say('I am not building any map so there is no map to save')
 
     def cleanup(self):
         # stop the robot!
-        twist = Twist()
-        #self.pub.publish(twist)
+        self.stop()
+        self.pub.publish(twist)
 
 if __name__=="__main__":
     rospy.init_node('voice_cmd_vel')
