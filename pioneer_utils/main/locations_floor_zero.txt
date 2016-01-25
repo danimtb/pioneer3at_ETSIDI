@@ -1,0 +1,17 @@
+COMAU: 0.302 9.037
+Puerta LAB: 0.333 15.341
+Hueco Servidores: 2.301 11.918
+HOME: 0.341 0.116
+Invernadero: 1.908 3.249
+Mesa LAB: 3.489 -6.227
+Puesto COMAU: -0.279 6.238
+Puerta Pasillo: -0.498 18.215
+Turbina: -16.024 15.750
+Motores: -36.822 12.473
+Escaleras: 5.699 18.651
+Caja Ingenieros: 9.764 15.887
+Ascensor: 12.820 27.368
+Mantenimiento: 26.658 14.922
+Audiovisuales: 26.888 -7.035
+Puerta pasillo: 30.824 -28.880
+Final pasillo: 33.479 -43.724
