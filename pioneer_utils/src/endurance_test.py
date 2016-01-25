@@ -112,6 +112,7 @@ class NavTest():
         location = ""
         last_location = ""
         self.last_pose = Odometry()
+        self.once = True
                    
         rospy.loginfo("Starting navigation test")
         
@@ -145,8 +146,6 @@ class NavTest():
             
             # Let the user know where the robot is going next
             rospy.loginfo("Going to: " + str(location))
-
-            print self.last_pose
             
             # Start the robot toward the next location
             self.move_base.send_goal(self.goal)
@@ -188,7 +187,10 @@ class NavTest():
 
     def distance_callback(self, now_pose):
     	# Keep track of the distance traveled.
-        self.distance += sqrt(pow(now_pose.pose.pose.position.x - self.last_pose.pose.pose.position.x, 2) + pow(now_pose.pose.pose.position.y - self.last_pose.pose.pose.position.y, 2))
+        if self.once:
+            self.last_pose = now_pose
+            self.once = False
+        self.distance += sqrt(pow(self.last_pose.pose.pose.position.x - now_pose.pose.pose.position.x, 2) + pow(self.last_pose.pose.pose.position.y - now_pose.pose.pose.position.y, 2))
         self.last_pose = now_pose
       
 def trunc(f, n):
