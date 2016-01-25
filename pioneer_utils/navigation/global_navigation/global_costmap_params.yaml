@@ -14,9 +14,9 @@ global_costmap:
 
   obstacle_layer_kinect:
     observation_sources: kinect_laser kinect_laser_low kinect_laser_long
-    kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth, marking: true, clearing: true, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: true}
-    kinect_laser_low: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_low, marking: true, clearing: true, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: true}
-    kinect_laser_long: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_long, marking: true, clearing: true, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: true}
+    kinect_laser: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth, marking: true, clearing: true, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: false}
+    kinect_laser_low: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_low, marking: true, clearing: false, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: false}
+    kinect_laser_long: {sensor_frame: camera_link, data_type: LaserScan, topic: camera/scan_depth_long, marking: true, clearing: true, obstacle_range: 3.0, raytrace_range: 6.5, inf_is_valid: false}
 
   obstacle_layer_laser:
     observation_sources: sick_lms1xx
