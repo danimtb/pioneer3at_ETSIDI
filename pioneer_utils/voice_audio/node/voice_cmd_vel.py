@@ -44,12 +44,8 @@ class voice_cmd_vel:
         self.navigation = False
         self.msg = Twist()
         
-        # How long in seconds should the robot pause at each location?
-        self.rest_time = rospy.get_param("~rest_time", 10)
         # .txt file with name and x, y coordinates for location
         self.map_locations = rospy.get_param("~map_locations")
-        # odometry topic name
-        self.odometry_topic = rospy.get_param("~odometry_topic", "odom")
         # cmd_vel topic name
         self.cmd_vel_topic = rospy.get_param("~cmd_vel_topic", "cmd_vel")
                        
@@ -148,35 +144,7 @@ class voice_cmd_vel:
 
 ################################ navigation commands
 
-        if msg.data.find("kk") > -1: #OJOOOOOOOOOOOOOOOOOOO cambiar
-            if self.navigation == False:
-                self.soundhandle.say('Starting navigation stack')
-                rospy.sleep(2)
-                self.soundhandle.say('Visualizing costmaps')
-                self.msg = Twist()
-                self.proc5 = subprocess.Popen(['roslaunch', 'pioneer_utils', 'navigation_p3at.launch'])
-                self.proc6 = subprocess.Popen(['roslaunch', 'pioneer_utils', 'rviz-navigation.launch'])
-                self.navigation = True
-            else:
-                self.soundhandle.say('Already in navigation mode')
-
-        elif msg.data.find("kk") > -1: #OJOOOOOOOOOOOOO cambiar
-            if self.navigation == True:
-                self.msg = Twist()
-                print 'proc5 = ', self.proc5.pid
-                self.proc5.terminate()
-                kill(self.proc5.pid)
-                self.proc5.kill()
-                print 'proc6 = ', self.proc6.pid
-                self.proc6.terminate()
-                kill(self.proc6.pid)
-                self.proc6.kill()
-                self.navigation = False
-                self.soundhandle.say('Navigation stopped')
-            else:
-                self.soundhandle.say('I am not in navigation mode')
-                
-        elif msg.data.find("navigate to") > -1:
+        if msg.data.find("navigate to") > -1:
             if len(msg.data.split()) > 2:
                 if msg.data.rsplit("navigate to ", 1)[1] in self.locations.keys():
                     self.send_goal(msg.data.rsplit("navigate to ", 1)[1])
