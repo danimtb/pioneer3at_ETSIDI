@@ -3,7 +3,7 @@ GlobalPlanner:
   use_quadratic: true               # Use the quadratic approximation of the potential. Otherwise, use a simpler calculation, default true
   use_dijkstra: true                 # Use dijkstra's algorithm. Otherwise, A*, default true
   use_grid_path: false               # Create a path that follows the grid boundaries. Otherwise, use a gradient descent method, default false
-  visualize_potential: false
+  visualize_potential: true
   
   allow_unknown: true               # Allow planner to plan through unknown space, default true
                                      # Needs to have track_unknown_space: true in the obstacle / voxel layer (in costmap_commons_param) to work
@@ -17,5 +17,5 @@ GlobalPlanner:
   lethal_cost: 253                              # default 253
   neutral_cost: 50                              # default 50
   cost_factor: 3.0                              # Factor to multiply each cost from costmap by, default 3.0
-  publish_potential: false                       # Publish Potential Costmap (this is not like the navfn pointcloud2 potential), default true
+  publish_potential: true                       # Publish Potential Costmap (this is not like the navfn pointcloud2 potential), default true
 

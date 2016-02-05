@@ -11,9 +11,7 @@
     <param name="map_locations" value="$(find pioneer_utils)/main/locations.txt"/>
     
     <rosparam>
-       odometry_topic: odom
        cmd_vel_topic: cmd_vel
-       rest_time: 5
      </rosparam>
   </node>
 
