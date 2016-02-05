@@ -3,7 +3,7 @@ Puerta LAB: 0.333 15.341
 Hueco Servidores: 2.301 11.918
 HOME: 0.341 0.116
 Invernadero: 1.908 3.249
-Mesa LAB: 3.489 -6.227
+Mesa LAB: 3.489 -3.227
 Puesto COMAU: -0.279 6.238
 Puerta Pasillo: -0.498 18.215
 Turbina: -16.024 15.750
