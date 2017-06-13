@@ -4,10 +4,12 @@ pioneer3at_ETSIDI: Pioneer 3 AT setup at ETSIDI-UPM
 
 This repo hosts ROS packages working on Indigo version. This packages are needed to setup a CATKIN workspace  and include all files needed for Pioneer 3 AT robot at ETSIDI-UPM university.
 
-####Navigation Video Demo
+#### Navigation Video Demo
+
 [![Pioneer 3 AT navigation using ROS + Laser + Kinect](http://img.youtube.com/vi/vXFqmWmqZSs/0.jpg)](http://www.youtube.com/watch?v=vXFqmWmqZSs)
 
-####First navigation steps compilation
+#### First navigation steps compilation
+
 [![Pioneer 3 AT first steps with ROS navigation](http://img.youtube.com/vi/w9qAdscY48k/0.jpg)](https://www.youtube.com/watch?v=w9qAdscY48k)
 
 Submodules
@@ -96,21 +98,21 @@ And implements easy to use nodes:
 
 - Teleoperation node.
 
-	  ``rosrun pioneer_utils teleop_p3at``
+		$ rosrun pioneer_utils teleop_p3at
 
 - Dead Reckoning node: Let robot move alone and making turns.
 
-	  ``rosrun pioneer_utils moving_alone``
+		$ rosrun pioneer_utils moving_alone
 
 - nav-waypoints node (navigation_goals): Send global or local goals to navigation stack.
 
-	  ``rosrun pioneer_utils nav-waypoints``
+		$ rosrun pioneer_utils nav-waypoints
 
 - endurance_test node: implements randomly navigation to a list of points
 
 	See launch file template:
 		
-		``roslaunch pioneer_utils endurance_test.launch"
+		$ roslaunch pioneer_utils endurance_test.launch
 
 	List of points as *map_locations.txt* rosparam.
     
@@ -125,7 +127,7 @@ After clonning this github repo in your catkin_ws src/ directory do the followin
 
 ``$ catkin_make``
 
-####Navigation Stack
+#### Navigation Stack
 
 Now run "roscore" and the nodes needed with the .launch file you'll find in src/ directory.
 
@@ -141,7 +143,7 @@ Now, you can start navigation stack with amcl like this:
 
   ``$ roslaunch pioneer_utils navigation_pioneer-3at.launch``
 
-####Pioneer 3 AT Follower (from turtlebot)
+#### Pioneer 3 AT Follower (from turtlebot)
 
 Open a terminal and launch the follower:
 
@@ -151,7 +153,7 @@ If you want to guide your robot following you to build a map, run instead:
 
 ``$ roslaunch pioneer_utils gmapping-follower.launch``
 
-####Pioneer 3 AT Panorama (from turtlebot)
+#### Pioneer 3 AT Panorama (from turtlebot)
 
 Open a terminal and launch the panorama:
 
@@ -171,8 +173,8 @@ If you want to do some navigation with Willow Garage's map type in other termina
 ``$ roslaunch pioneer_utils pioneer3at_gazebo_world.launch``
 
 
-![gazebo with obstacles](/pioneer_utils/gazebo/snapshots/gazebo_2015-10-05 19:47:40.png)
+![gazebo with obstacles](pioneer_utils/gazebo/snapshots/gazebo_2015-10-05%2019:47:40.png)
 
 
-![gazebo willow garage world](/pioneer_utils/gazebo/snapshots/gazebo_2015-09-21 01:17:58.png)
+![gazebo willow garage world](pioneer_utils/gazebo/snapshots/gazebo_2015-09-21%2001:17:58.png)
 
