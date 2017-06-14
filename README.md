@@ -173,8 +173,8 @@ If you want to do some navigation with Willow Garage's map type in other termina
 ``$ roslaunch pioneer_utils pioneer3at_gazebo_world.launch``
 
 
-![gazebo with obstacles](pioneer_utils/gazebo/snapshots/gazebo_2015-10-05%2019:47:40.png)
+![gazebo with obstacles](pioneer_utils/gazebo/snapshots/gazebo_2015-10-05_194740.png)
 
 
-![gazebo willow garage world](pioneer_utils/gazebo/snapshots/gazebo_2015-09-21%2001:17:58.png)
+![gazebo willow garage world](pioneer_utils/gazebo/snapshots/gazebo_2015-09-21_011758.png)
 
